@@ -7,6 +7,7 @@ const EventSchema = Schema({
   name: String,
   picture: String,
   date: { type: Date, default: Date.now() },
+  dateCreated: { type: Date, default: Date.now() },
   category: { type: String, enum: ['salir', 'aficiones', 'grupos'] },
   description: String
 })

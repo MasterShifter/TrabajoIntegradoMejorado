@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+  <title>Planizator</title>
+
+  <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link type="text/css" rel="stylesheet" href="/public/css/bootstrap.min.css"  media="screen,projection"/>
+
+  <link href="/public/css/micss.css" type="text/css" rel="stylesheet" media="screen,projection" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body>
+
+  <div id="custom-bootstrap-menu" class="navbar navbar-default "
+  role="navigation">
+  <div class="container-fluid">
+    <div class="col-lg-8 col-lg-offset-2">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/">Planizator</a>
+        <button type="button" class="navbar-toggle" data-toggle="collapse"
+        data-target=".navbar-menubuilder">
+        <span class="sr-only">Toggle navigation</span><span
+        class="icon-bar"></span><span class="icon-bar"></span><span
+        class="icon-bar"></span>
+      </button>
+    </div>
+    <div id="menu" class="collapse navbar-collapse navbar-menubuilder">
+      <ul class="nav navbar-nav navbar-left">
+        <li><a href="#">Eventos</a></li>
+        <li><a href="#">Usuarios</a></li>
+        <li><a href="#">Acerca de</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="login"><span class="glyphicon glyphicon-log-in"></span>&nbsp;<span>Iniciar sesión</span></a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<div class="container-fluid text-center">
+
+  <div class="row">
+    <!--
+    <div class="col-sm-2 sidenav">
+    <p><a href="#">Link</a></p>
+    <p><a href="#">Link</a></p>
+    <p><a href="#">Link</a></p>
+  </div>
+-->
+<!-- MAIN CONTAINER -->
+<div class="col-lg-8 col-lg-offset-2 contenedor-principal">
+  {{{body}}}
+</div>
+
+<div class="col-sm-2 sidenav">
+  <div class="well">
+    <p>ADS</p>
+  </div>
+  <div class="well">
+    <p>ADS</p>
+  </div>
+</div>
+</div>
+<!-- row -->
+</div>
+<!-- container -->
+
+<!-- FOOTER -->
+<footer class="container-fluid text-center">
+  <p>Footer Text</p>
+</footer>
+
+<script type="text/javascript">
+
+if (localStorage.getItem('token') != null){
+  fetch(`/api/user/${localStorage.id}`, {
+    method: 'GET',
+    headers: new Headers()
+  })
+  .then(res => res.json())
+  .then(data => {
+    var opPerfil = document.createElement('li')
+    var perfil = document.createElement('a')
+    perfil.href = `user/${data.user.displayName}`
+    perfil.innerHTML = data.user.displayName
+    opPerfil.appendChild(perfil)
+
+    var opMensajes = document.createElement('li')
+    var mensajes = document.createElement('a')
+    mensajes.href = `mail`
+    mensajes.innerHTML = 'Mensajes'
+    opMensajes.appendChild(mensajes)
+
+    var menu = document.getElementById('menu').getElementsByTagName('ul')
+
+    menu[0].insertBefore(opMensajes, menu[0].getElementsByTagName('li')[0])
+    menu[0].insertBefore(opPerfil, menu[0].getElementsByTagName('li')[0])
+
+    menu[1].getElementsByTagName('span')[1].innerHTML = 'Cerrar sesión'
+    menu[1].getElementsByTagName('a')[0].href = '/'
+    menu[1].getElementsByTagName('a')[0].onclick = cerrarSesion
+  })
+}
+function cerrarSesion(event){
+  localStorage.removeItem('token')
+  localStorage.removeItem('id')
+}
+</script>
+
+<script type="text/javascript" src="/public/js/jquery-3.2.1.min.js" />
+<script type="text/javascript" src="/public/js/bootstrap.min.js" />
+
+</body>
+</html>

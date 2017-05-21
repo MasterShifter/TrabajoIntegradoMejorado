@@ -6,7 +6,7 @@ function getEvent (req, res){
   let  eventId = req.params.eventId
 
   Event.findById(eventId, (err, event) => {
-    if (err) res.status(500).send({message: `Error al realizar la peticion: ${err}`})
+    if (err) return res.status(500).send({message: `Error al realizar la peticion: ${err}`})
     if (!event) return res.status(404).send({message: `El evento no existe`})
 
     res.status(200).send({event})
@@ -22,8 +22,6 @@ function getEvents (req, res){
 }
 
 function saveEvent (req, res){
-  console.log('POST /api/event')
-  console.log(req.body)
 
   let event = new Event()
   event.name = req.body.name
