@@ -1,0 +1,109 @@
+<h1> Registrar un nuevo evento </h1>
+<hr />
+
+<form id="createEvent" name="createEvent" method="POST">
+  <div id="errorDiv" class="alert alert-warning hide">
+    <span id="errorMessage"></span>
+  </div>
+  <div class="form-group">
+    <label class="col-md-3 control-label text-right" for="name">Nombre: </label>
+    <div class="col-xs-12 col-md-6 input-group">
+      <input type="name" class="form-control" id="name" name="name" placeholder="Nombre" required>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-md-3 control-label text-right" for="description">Descripción:</label>
+    <div class="col-xs-12 col-md-6 input-group">
+      <textarea class="form-control" rows="5" id="description"></textarea>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-md-3 control-label text-right" for="picture">URL Imagen: </label>
+    <div class="col-xs-12 col-md-6 input-group">
+      <input type="text" class="form-control" id="picture" name="picture" placeholder="http://avatar.com/avatar.jpg" >
+    </div>
+  </div>
+  <div class="form-group hide">
+    <label class="col-md-3 control-label text-right" for="user">ID User: </label>
+    <div class="col-xs-12 col-md-6 input-group">
+      <input type="text" class="form-control" id="user" name="user" placeholder="Usuario" >
+    </div>
+  </div>
+
+  <!-- Date input-->
+  <div class="form-group">
+    <label class="col-md-3 control-label text-right" for="date">Fecha del evento: </label>
+    <div class="col-xs-12 col-md-6 input-group date">
+      <input type="text" class="form-control datepicker" id="date" name="date" readonly required><span
+      class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-md-3 control-label text-right" for="tag">Clasificar en:</label>
+    <div class="col-xs-12 col-md-6 input-group">
+      <select class="form-control" id="tag" name="tag">
+        <option>Cargando valores...</option>
+      </select>
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-default">Registrar nuevo evento</button>
+</form>
+
+<br />
+
+<script>
+var selector = document.getElementById('tag')
+fetch('/api/tag', {
+  method: 'GET'
+})
+.then(res => res.json())
+.then(data => {
+  selector.innerHTML = "";
+  data.tags.map(tag => {
+    let text = document.createTextNode(tag.name)
+    let elem = document.createElement('option')
+    elem.value = tag._id
+    elem.appendChild(text)
+    selector.appendChild(elem)
+  })
+})
+</script>
+
+<script type="text/javascript">
+const myHeaders = new Headers();
+myHeaders.append('authorization', `Bearer ${localStorage.token}`)
+
+const formEvent = document.forms.createEvent
+
+formEvent.addEventListener('submit', event => {
+  event.preventDefault()
+  var formData = new FormData();
+
+  formData.append("name", formEvent.name.value);
+  formData.append("description", formEvent.description.value);
+  formData.append("picture", formEvent.picture.value);
+  formData.append("date", formEvent.date.value);
+  formData.append("user", localStorage.getItem('id'));
+  formData.append("tag", formEvent.tag.value);
+
+  fetch('/api/event', {
+    method: 'POST',
+    headers: myHeaders,
+    body: formData
+  })
+  .then(res => res.json())
+  .then(data => {
+    var aviso = document.getElementById('errorMessage')
+    var avisoDiv = document.getElementById('errorDiv')
+    if (data.message == null){
+      avisoDiv.className = "alert alert-success"
+      aviso.innerHTML = "¡Evento creado!"
+    } else {
+      avisoDiv.className = "alert alert-warning"
+      aviso.innerHTML = data.message
+    }
+  })
+})
+</script>

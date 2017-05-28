@@ -8,8 +8,10 @@ const bcrypt = require('bcrypt-nodejs')
 function signUp(req, res){
   const user = new User({
     email: req.body.email,
+    nickname: req.body.nickname,
     displayName: req.body.displayName,
-    password: req.body.password
+    password: req.body.password,
+    birthdate: req.body.birthdate
   })
 
   user.save((err) => {
@@ -29,8 +31,6 @@ function signIn(req, res){
     if (!user || user.length === 0) return res.status(404).send({message: `Usuario o contraseña incorrecta ${req.body.email}`})
 
     req.user = user[0]
-
-    var contrasenaCoincide = false
 
   bcrypt.compare(req.body.password, req.user.password, function(err, matches) {
     if (err) return res.status(404).send({message: `Error en la conexión ${req.body.email}`})
@@ -57,7 +57,22 @@ function getUser (req, res){
     if (err) return res.status(500).send({message: `Error al realizar la peticion: ${err}`})
     if (!user) return res.status(404).send({message: `El usuario no existe`})
 
-    res.status(200).send({user})
+    User.populate(user, {path: "role"},function(err, user){
+        if (err) return res.status(500).send({message: `Error al realizar la peticion: ${err}`})
+        res.status(200).send({ user })
+    });
+  })
+}
+
+function getUsers (req, res){
+  User.find({}, (err, users) => {
+    if (err) return res.status(500).send({message: `Error al realizar la peticion: ${err}`})
+    if (!users) return res.status(404).send({message: `No existen usuarios`})
+
+    User.populate(users, {path: "role"},function(err, users){
+        if (err) return res.status(500).send({message: `Error al realizar la peticion: ${err}`})
+        res.status(200).send({ users })
+    });
   })
 }
 
@@ -66,5 +81,6 @@ function getUser (req, res){
 module.exports = {
   signUp,
   signIn,
-  getUser
+  getUser,
+  getUsers
 }

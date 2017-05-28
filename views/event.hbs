@@ -1,0 +1,189 @@
+<h2 class="col-md-offset-1 text-left">Información de la quedada: </h2>
+<hr />
+
+<section id="eventHolder" class="comment-list">
+</section>
+
+<h2 class="col-md-offset-1 text-left">Comentarios: </h2>
+<hr />
+
+<section id="commentsHolder" class="comment-list">
+</section>
+
+<section id="newComment">
+  <h2 class="col-md-offset-1 text-left">Responder: </h2>
+  <hr />
+  <div class="row">
+  <div class="col-md-12">
+  <div class="widget-area no-padding blank">
+  <div class="status-upload">
+  <form id="formComment" name="formComment">
+  <textarea id="content" name="content" placeholder="Escribe aquí tu respuesta al evento" ></textarea>
+  </form>
+  <button id="commentSend" class="btn btn-success green">Comentar</button>
+  </div><!-- Status Upload  -->
+  </div><!-- Widget Area -->
+  </div>
+  </div>
+</section>
+
+
+<script type="text/javascript">
+
+window.addEventListener('load', function(){
+
+  const myHeaders = new Headers();
+  myHeaders.append('authorization', `Bearer ${localStorage.token}`)
+
+  var eventId = getParameterByName("eventId")
+
+  fetch('/api/event/'+eventId, {
+    method: 'GET',
+    headers: myHeaders
+  })
+  .then(res => res.json())
+  .then(data => {
+
+    if (data.message == null){
+
+      var event = data.event
+
+      var item = document.createElement('article')
+      item.className = "row"
+      item.innerHTML =
+      `<!-- First Comment -->
+      <article class="row">
+      <div class="col-md-2 col-sm-2 hidden-xs">
+      <figure class="thumbnail">
+      <img class="img-responsive" src=${event.picture} />
+      </figure>
+      </div>
+      <div class="col-md-10 col-sm-10">
+      <div class="panel panel-default arrow left">
+      <div class="panel-body">
+      <div class="panel-heading right"><time class="comment-date" datetime=${dateToString(event.date)}><span class="glyphicon glyphicon-calendar"></span></i>${dateToString(event.date)}</time></div>
+      <header class="text-left">
+      <div class="comment-user"><h3>${event.name}</h3></div>
+      <small>Autor: ${event.user.nickname}. Evento creado en: ${dateToString(event.dateCreated)}</small>
+      </header>
+      <div class="comment-post">
+      <p class="text-left">
+      ${event.description}
+      </p>
+      </div>
+      <p class="text-center"><a href="#" class="btn btn-info btn-lg btn-block">Unirse</a></p>
+      </div>
+      </div>
+      </div>`;
+
+      document.getElementById('eventHolder').appendChild(item)
+
+      for (var i=0; i<event.eventmessage.length; i++){
+
+        var comment = document.createElement('article')
+        comment.className = "row"
+        comment.innerHTML =
+        `  <!-- Second Comment Reply -->
+        <div class="col-md-1 col-sm-1 col-md-offset-1 col-sm-offset-0 hidden-xs">
+        <figure class="thumbnail">
+        <img class="img-responsive" src=${event.eventmessage[i].user.avatar} />
+        </figure>
+        </div>
+        <div class="col-md-10 col-sm-10">
+        <div class="panel panel-default arrow left">
+        <div class="panel-heading right"><time class="comment-date" datetime=${dateToString(event.eventmessage[i].dateCreated)}><span class="glyphicon glyphicon-calendar"></span> ${dateToString(event.eventmessage[i].dateCreated)}</time></div>
+        <div class="panel-body">
+        <header class="text-left">
+        <div class="comment-user"><small><a href=${"user/"+event.user.nickname}><span class="glyphicon glyphicon-user"></span>${event.eventmessage[i].user.nickname}</a></small></div>
+
+        </header>
+        <div class="comment-post">
+        <p class="text-left">
+        ${event.eventmessage[i].content}
+        </p>
+        </div>
+        </div>`
+
+        document.getElementById('commentsHolder').appendChild(comment)
+      }
+
+      if (window.user == null){
+        document.getElementById('newComment').innerHTML = "<span class='alert alert-info'>Debes estar logueado para comentar</span>";
+      }
+    } else {
+
+      var item = document.createElement('span')
+      item.className = "row"
+      item.innerHTML =
+      `<span class="alert alert-warning">El evento no existe</span>`;
+
+      document.getElementById('eventHolder').appendChild(item);
+
+      document.getElementById('newComment').innerHTML = "<span class='alert alert-info'>No se puede comentar</span>";
+    }
+  })
+}, false);
+
+
+function getParameterByName(name, url) {
+  if (!url) url = window.location.href;
+  name = name.replace(/[\[\]]/g, "\\$&");
+  var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+  results = regex.exec(url);
+  if (!results) return null;
+  if (!results[2]) return '';
+  return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+function dateToString(fecha) {
+  var meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+  var date = new Date(fecha);
+  var dateString = date.getDate()+"/"+meses[date.getMonth()]+"/"+date.getFullYear();
+
+  return dateString;
+}
+
+</script>
+
+
+
+<script type="text/javascript">
+
+window.addEventListener('load', function(){
+
+  const myHeaders = new Headers();
+  myHeaders.append('authorization', `Bearer ${localStorage.token}`)
+
+  const formComment = document.forms.formComment
+
+  document.getElementById('commentSend').addEventListener('click', event => {
+    event.preventDefault();
+
+    var formData = new FormData();
+    var eventId = getParameterByName("eventId");
+
+    formData.append("content", formComment.content.value);
+    formData.append("user", localStorage.getItem('id'));
+    formData.append("event", eventId);
+
+    console.log("HOLIWI")
+    fetch('/api/eventmessages', {
+      method: 'POST',
+      headers: myHeaders,
+      body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+      var aviso = document.getElementById('errorMessage');
+      var avisoDiv = document.getElementById('errorDiv');
+      if (data.message != null){
+        //location.reload();
+        alert("HOLIWI")
+      } else {
+        alert("HOLIWOOO")
+      }
+    })
+  })
+})
+</script>

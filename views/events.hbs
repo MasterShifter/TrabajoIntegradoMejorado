@@ -1,8 +1,4 @@
 
-
-
-  <br />
-
   <div id="myCarousel" class="carousel slide anuncio-principal" data-ride="carousel">
     <!-- Indicators -->
     <ol class="carousel-indicators">
@@ -94,18 +90,18 @@
       var item = document.createElement('li')
       item.innerHTML =
       `<time datetime=${event.date}>
+      <br />
       <span class="day">${new Date(event.date).getDate() }</span>
       <span class="month">${meses[new Date(event.date).getMonth()] }</span>
       <span class="year">${new Date(event.date).getYear() }</span>
-      <span class="time">ALL DAY</span>
       </time>
-      <img alt=${event.name} src="https://farm4.staticflickr.com/3100/2693171833_3545fb852c_q.jpg" />
+      <img alt=${event.name} src=${event.picture} />
       <div class="info">
-      <h2 class="title">${event.name}</h2>
+      <h2 class="title"><a href=${"/event?eventId="+event._id}>${event.name}</a></h2>
       <p class="desc">${event.description}</p>
       <ul>
-      <li style="width:34%;">moderador <span class="glyphicon glyphicon-user"></span></li>
-      <li style="width:33%;">${event.category} <span class="glyphicon glyphicon-tag"></span></li>
+      <li style="width:34%;"><small><a href=${"user/"+event.user.nickname}><span class="glyphicon glyphicon-user"></span>${event.user.displayName}</a></small></li>
+      <li style="width:33%;"><span class="label label-primary">${event.tag.name}</span></li>
       </ul>
       </div>`;
 

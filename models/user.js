@@ -4,14 +4,19 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const bcrypt = require('bcrypt-nodejs')
 const crypto = require('crypto')
+const Role = require('./role')
 
 const UserSchema = new Schema({
-  email: { type: String, unique: true, lowercase: true },
-  displayName: String,
-  avatar: String,
-  password: { type: String, select: true },
+  email: { type: String, index: { unique: true }, lowercase: true },
+  nickname: { type: String, index: { unique: true } },
+  displayName: { type: String, index: { unique: false } },
+  avatar: { type: String, default: "" },
+  password: { type: String },
+  birthdate: { type: Date },
   signUpDate: { type: Date, default: Date.now() },
-  lastLogin: Date
+  lastLogin: { type: Date, default: Date.now() },
+  role: { type: Schema.Types.ObjectId, ref: 'Role', default: "59242f497a441778fcec423b" },
+  genre: { type: String, enum : ['No especificado', 'Hombre', 'Mujer'], default: 'No especificado'}
 })
 
 UserSchema.pre('save', function (next) {
@@ -25,6 +30,8 @@ UserSchema.pre('save', function (next) {
       if (err) return next(err)
 
       user.password = hash
+
+      if (!this.avatar) this.avatar = UserSchema.methods.gravatar()
       next()
     })
   })

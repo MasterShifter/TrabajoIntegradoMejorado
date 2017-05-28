@@ -4,12 +4,16 @@
     <strong>¡Error!</strong> <span id="errorMessage"></span>
   </div>
   <div class="form-group">
-    <label for="email">Email address</label>
-    <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+    <label class="col-md-3 control-label text-right" for="email">Email address</label>
+    <div class="col-md-6 input-group">
+      <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+    </div>
   </div>
   <div class="form-group">
-    <label for="password">Password</label>
-    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+    <label class="col-md-3 control-label text-right" for="password">Password</label>
+    <div class="col-md-6 input-group">
+      <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+    </div>
   </div>
   <button type="submit" class="btn btn-default">Submit</button>
 </form>
@@ -35,6 +39,7 @@ formLogin.addEventListener('submit', event => {
       avisoDiv.className = "alert alert-warning hide"
       localStorage.setItem('token', data.token)
       localStorage.setItem('id', data.id)
+      retrieveUser();
     } else {
       avisoDiv.className = "alert alert-warning"
       aviso.innerHTML = data.message
