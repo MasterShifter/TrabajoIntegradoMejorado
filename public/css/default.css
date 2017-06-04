@@ -9,6 +9,7 @@
 	border-width: 0px;
 	border-radius: 0px;
 	margin: 0px;
+	padding: 0px;
 }
 
 #custom-bootstrap-menu.navbar-default .navbar-nav>li>a {
@@ -48,7 +49,7 @@
 }
 
 .navbar-brand {
-	font-size: 30pt;
+	font-size: 24pt;
 }
 
 /*----------------------------------------------------------------------------------------------------------------------------------*/
@@ -79,6 +80,13 @@ body {
 	background-size: cover;
 	background-attachment: fixed;
 	background-color: black;
+}
+
+ul{
+	list-style: none;
+	display: inline;
+	margin: 0px;
+	padding: 0px;
 }
 
 body > div {
@@ -166,69 +174,14 @@ Tarjetas
 	text-overflow: ellipsis;
 	overflow: hidden;
 }
-.event-list > li > .info > ul,
-.event-list > li > .social > ul {
-	display: table;
-	list-style: none;
-	margin: 10px 0px 0px;
-	padding: 0px;
-	width: 100%;
-	text-align: center;
-}
-.event-list > li > .social > ul {
-	margin: 0px;
-}
-.event-list > li > .info > ul > li,
-.event-list > li > .social > ul > li {
-	display: table-cell;
-	cursor: pointer;
-	color: rgb(30, 30, 30);
-	font-size: 11pt;
-	font-weight: 300;
-	padding: 3px 0px;
-}
-.event-list > li > .info > ul > li > a {
+
+.event-list > li > .info > div > a {
 	display: block;
 	width: 100%;
 	color: rgb(30, 30, 30);
 	text-decoration: none;
 }
-.event-list > li > .social > ul > li {
-	padding: 0px;
-}
-.event-list > li > .social > ul > li > a {
-	padding: 3px 0px;
-}
-.event-list > li > .info > ul > li:hover,
-.event-list > li > .social > ul > li:hover {
-	color: rgb(30, 30, 30);
-	background-color: rgb(200, 200, 200);
-}
-.facebook a,
-.twitter a,
-.google-plus a {
-	display: block;
-	width: 100%;
-	color: rgb(75, 110, 168) !important;
-}
-.twitter a {
-	color: rgb(79, 213, 248) !important;
-}
-.google-plus a {
-	color: rgb(221, 75, 57) !important;
-}
-.facebook:hover a {
-	color: rgb(255, 255, 255) !important;
-	background-color: rgb(75, 110, 168) !important;
-}
-.twitter:hover a {
-	color: rgb(255, 255, 255) !important;
-	background-color: rgb(79, 213, 248) !important;
-}
-.google-plus:hover a {
-	color: rgb(255, 255, 255) !important;
-	background-color: rgb(221, 75, 57) !important;
-}
+
 
 @media (min-width: 768px) {
 	.event-list > li {
@@ -399,67 +352,159 @@ Tarjetas
 
 
 .widget-area.blank {
-background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
-box-shadow: none;
+	background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+	box-shadow: none;
 }
 body .no-padding {
-padding: 0;
+	padding: 0;
 }
 .widget-area {
-background-color: #fff;
-border-radius: 4px;
-box-shadow: 0 0 16px rgba(0, 0, 0, 1);
-float: left;
-margin-top: 30px;
-padding: 25px 30px;
-position: relative;
-width: 100%;
+	background-color: #fff;
+	border-radius: 4px;
+	box-shadow: 0 0 16px rgba(0, 0, 0, 1);
+	float: left;
+	margin-top: 30px;
+	padding: 25px 30px;
+	position: relative;
+	width: 100%;
 }
 .status-upload {
-background: none repeat scroll 0 0 #f5f5f5;
-border-radius: 4px;
-float: left;
-width: 100%;
+	background: none repeat scroll 0 0 #f5f5f5;
+	border-radius: 4px;
+	float: left;
+	width: 100%;
 }
 .status-upload form {
-float: left;
-width: 100%;
+	float: left;
+	width: 100%;
 }
 .status-upload form textarea {
-background: none repeat scroll 0 0 #fff;
-border: medium none;
-border-radius: 4px 4px 0 0;
-color: #777777;
-float: left;
-font-family: Lato;
-font-size: 14px;
-height: 142px;
-letter-spacing: 0.3px;
-padding: 20px;
-width: 100%;
-resize:vertical;
-outline:none;
-border: 1px solid #F2F2F2;
+	background: none repeat scroll 0 0 #fff;
+	border: medium none;
+	border-radius: 4px 4px 0 0;
+	color: #777777;
+	float: left;
+	font-family: Lato;
+	font-size: 14px;
+	height: 142px;
+	letter-spacing: 0.3px;
+	padding: 20px;
+	width: 100%;
+	resize:vertical;
+	outline:none;
+	border: 1px solid #F2F2F2;
 }
 .status-upload form button {
-border: medium none;
-border-radius: 4px;
-color: #fff;
-float: right;
-font-family: Lato;
-font-size: 14px;
-letter-spacing: 0.3px;
-margin-right: 9px;
-margin-top: 9px;
-padding: 6px 15px;
+	border: medium none;
+	border-radius: 4px;
+	color: #fff;
+	float: right;
+	font-family: Lato;
+	font-size: 14px;
+	letter-spacing: 0.3px;
+	margin-right: 9px;
+	margin-top: 9px;
+	padding: 6px 15px;
 }
 .dropdown > a > span.green:before {
-border-left-color: #2dcb73;
+	border-left-color: #2dcb73;
 }
 .status-upload form button > i {
-margin-right: 7px;
+	margin-right: 7px;
 }
 
+
+
+
+
+
+#dialog-background{
+	display: block;
+	position: absolute;
+	width: 100%;
+	height: 120%;
+	background-color: rgba(0,0,0,0.5);
+	padding-top: 5%;
+}
+
+#dialog{
+	display: block;
+	position: relative;
+	padding: 10px;
+	border-radius: 10px;
+	background-color: rgba(255,255,255,1);
+
+	animation-name: dialog-appears;
+	animation-duration: 0.5s;
+	animation-iteration-count: 1;
+	top: 0px;
+}
+
+
+
+
+@keyframes dialog-appears {
+	0%   {
+		opacity: 0;
+		top: 1000px;
+	}
+	100% {
+		opacity: 100;
+		top: 0px;
+	}
+}
+
+@keyframes generate {
+	0%   { width: 0%; }
+	100% { width: 100%; }
+}
+
+
+
+.hombre{
+	background-color: #284472;
+}
+
+.mujer{
+	background-color: #6d395e;
+}
+
+.no_especificado{
+	background-color: #3a3a3a;
+}
+
+.users_list{
+	margin: 0px;
+	padding: 0px;
+	list-style-type: none;
+}
+
+.users_list *{
+	padding: 0px;
+	color: white;
+}
+
+.centrar{
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	flex-direction: column;
+	align-content: center;
+}
+
+
+.avatar{
+	max-width: 200px;
+	max-height: 200px;
+	min-width: 0px;
+	min-height: 0px;
+	height: 100%;
+	width: 100%;
+}
+
+.nickname{
+	font-weight: bold;
+}
 
 
 /* Set black background color, white text and some padding */

@@ -5,6 +5,9 @@ const bodyParser = require('body-parser')
 const hbs = require('express-handlebars')
 const app = express()
 const api = require('./routes')
+const userCtrl = require('./controllers/user')
+const eventCtrl = require('./controllers/event')
+const auth = require('./middlewares/auth')
 var path = require('path')
 
 let multer = require('multer');
@@ -25,22 +28,49 @@ app.set('view engine', '.hbs')
 
 
 app.use('/api', api)
+
+//Home
+app.get('/', eventCtrl.showHome)
+
+//Login screen
 app.get('/login', upload.fields([]), (req, res) => {
   res.render('login')
 })
+
+//Register screen
 app.get('/register', upload.fields([]), (req, res) => {
   res.render('register')
 })
-app.get('/', (req, res) => {
-  res.render('events')
+
+//Edit profile
+app.get('/edituser/:userId', userCtrl.editScreen)
+
+//Show event
+app.get('/event/:eventId', eventCtrl.showEvent)
+
+//Edit event
+app.get('/editevent/:eventId', eventCtrl.editScreen)
+
+//Delete event
+app.get('/deleteevent/:eventId', eventCtrl.deleteScreen)
+
+//Show events
+app.get('/events', eventCtrl.showEvents)
+
+//Create new event
+app.get('/newevent', (req, res) => {
+  res.render('newevent')
 })
 
-app.get('/event', (req, res) => {
-  res.render('event')
+//Show user list
+app.get('/users', (req, res) => {
+  res.render('users')
 })
 
-app.get('/newEvent', (req, res) => {
-  res.render('newEvent')
-})
+//Show profile
+app.get('/user/:userNick', userCtrl.profileByNick)
+
+//Edit profile
+app.get('/edituser/:userId', userCtrl.editScreen)
 
 module.exports = app

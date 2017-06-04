@@ -1,0 +1,21 @@
+Usuario
+nickname: letras _ numeros	LIMITE: 12 carácteres
+displayName: letras, tildes, comas, guiones... LIMITE: 30 carácteres
+email: LIMITE: 100 carácteres
+avatar: LIMITE: 100 carácteres
+description: LIMITE: NO HAY
+birthdate: LIMITE: 16 años
+password: ninguna restriccion LIMITE: min 4 max 20 carácteres
+
+
+Evento
+name: letras, tildes, comas, guiones... LIMITE: 30 carácteres
+picture: LIMITE: 100 carácteres
+date: LIMITE: futuro
+description: LIMITE: NO HAY
+
+
+Mensaje
+content: LIMITE: Min 10 carácteres Max 500 carácteres
+
+

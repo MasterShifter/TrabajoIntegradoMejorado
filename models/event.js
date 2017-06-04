@@ -11,7 +11,8 @@ const EventSchema = Schema({
   tag: { type: Schema.Types.ObjectId, ref: 'Tag' },
   user: { type: Schema.Types.ObjectId, ref: 'User'},
   description: String, default: "",
-  eventmessage: [ {type : Schema.Types.ObjectId, ref : 'Eventmessage'} ]
+  eventmessage: [ {type : Schema.Types.ObjectId, ref : 'Eventmessage'} ],
+  userjoined: [ {type : Schema.Types.ObjectId, ref : 'Userjoined'} ]
 })
 
 module.exports = mongoose.model('Event', EventSchema)

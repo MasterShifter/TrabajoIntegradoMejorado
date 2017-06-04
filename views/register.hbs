@@ -1,5 +1,5 @@
-<br />
-<br />
+<h3>Nuevo usuario</h3>
+<hr />
 
 <form id="register" name="register" method="POST">
   <div id="errorDiv" class="alert alert-warning hide">
@@ -7,34 +7,45 @@
   </div>
   <div class="form-group">
     <label class="col-md-3 control-label text-right" for="nickname">Nickname: </label>
-    <div class="col-md-6 input-group">
+    <div class="col-xs-12 col-md-6 input-group">
       <input type="nickname" class="form-control" id="nickname" name="nickname" placeholder="Nickname" required>
     </div>
   </div>
   <div class="form-group">
     <label class="col-md-3 control-label text-right" for="displayName">Nombre: </label>
-    <div class="col-md-6 input-group">
+    <div class="col-xs-12 col-md-6 input-group">
       <input type="displayName" class="form-control" id="displayName" name="displayName" placeholder="Nombre" required>
     </div>
   </div>
   <div class="form-group">
     <label class="col-md-3 control-label text-right" for="email">Correo electrónico: </label>
-    <div class="col-md-6 input-group">
+    <div class="col-xs-12 col-md-6 input-group">
       <input type="email" class="form-control" id="email" name="email" placeholder="Correo electrónico" required>
     </div>
   </div>
   <div class="form-group">
     <label class="col-md-3 control-label text-right" for="password">Contraseña: </label>
-    <div class="col-md-6 input-group">
+    <div class="col-xs-12 col-md-6 input-group">
       <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña" required>
     </div>
   </div>
   <!-- Date input-->
   <div class="form-group">
     <label class="col-md-3 control-label text-right" for="birthdate">Fecha de nacimiento: </label>
-    <div class="col-md-6 input-group date">
+    <div class="col-xs-12 col-md-6 input-group date">
       <input type="text" class="form-control datepicker" name="birthdate" readonly required><span
       class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-md-3 control-label text-right" for="genre">Género:</label>
+    <div class="col-xs-12 col-md-6 input-group">
+      <select class="form-control" id="genre" name="genre">
+        <option value="No especificado">No especificado</option>
+        <option value="Hombre">Hombre</option>
+        <option value="Mujer">Mujer</option>
+      </select>
     </div>
   </div>
   <button type="submit" class="btn btn-default">Registrar nuevo usuario</button>
@@ -44,14 +55,12 @@
 
 
 <script type="text/javascript">
-const formLogin = document.querySelector('#register')
-var formData
+const formLogin = document.querySelector('#register');
+var formData;
 
 formLogin.addEventListener('submit', event => {
-  event.preventDefault()
-  formData = new FormData(formLogin)
-
-  console.log(formData)
+  event.preventDefault();
+  formData = new FormData(formLogin);
 
   fetch('/api/signup', {
     method: 'POST',
@@ -59,15 +68,15 @@ formLogin.addEventListener('submit', event => {
   })
   .then(res => res.json())
   .then(data => {
-    var aviso = document.getElementById('errorMessage')
-    var avisoDiv = document.getElementById('errorDiv')
+    var aviso = document.getElementById('errorMessage');
+    var avisoDiv = document.getElementById('errorDiv');
     if (data.message == null){
-      avisoDiv.className = "alert alert-warning hide"
-      localStorage.setItem('token', data.token)
-      localStorage.setItem('id', data.id)
+      avisoDiv.className = "alert alert-warning hide";
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('id', data.id);
     } else {
-      avisoDiv.className = "alert alert-warning"
-      aviso.innerHTML = data.message
+      avisoDiv.className = "alert alert-warning";
+      aviso.innerHTML = data.message;
     }
   })
 })

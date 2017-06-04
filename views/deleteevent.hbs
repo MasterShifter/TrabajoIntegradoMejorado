@@ -1,0 +1,58 @@
+<h3 class="col-md-offset-1 text-left">Eliminar la quedada: </h3>
+<hr />
+
+<div id="errorDiv" class="alert alert-warning hide">
+  <span id="errorMessage"></span>
+</div>
+
+<h4>Seguro que quieres eliminar la quedada?</h4>
+<h5>Nombre: {{event.name}}</h5>
+<span id="eventId">{{event.name}}</span>
+<span id="userId">{{event.user._id}}</span>
+
+<button id="sendButton" class="btn btn-danger btn-lg btn-block">Eliminar</button>
+<a href="/event/{{event._id}}" class="btn btn-default btn-lg btn-block">Cancelar</a>
+
+<script>
+var eventId = document.getElementById('eventId').innerHTML;
+var userId = document.getElementById('userId').innerHTML;
+
+if (window.user != null){
+  if (userId != window.user._id && window.user.role.name != "Administrador"){
+    window.location = "/";
+  }}else {
+    window.location = "/";
+  }
+  </script>
+
+  <script type="text/javascript">
+  var aviso = document.getElementById('errorMessage');
+  var avisoDiv = document.getElementById('errorDiv');
+  var botonEnviar = document.getElementById('sendButton');
+
+  const myHeaders = new Headers();
+  myHeaders.append('authorization', `Bearer ${localStorage.token}`);
+
+  botonEnviar.addEventListener('click', event => {
+    event.preventDefault();
+
+    var request = new Request('/api/event/'+document.forms.editEvent._id.value, {
+      method: 'DELETE',
+      headers: myHeaders
+    });
+
+    fetch(request)
+    .then(res => res.json())
+    .then(data => {
+      if (data.message == null){
+        avisoDiv.className = "alert alert-success";
+        aviso.innerHTML = "¡Evento eliminado!";
+
+        window.location = "/";
+      } else {
+        avisoDiv.className = "alert alert-warning";
+        aviso.innerHTML = data.message;
+      }
+    })
+  })
+  </script>

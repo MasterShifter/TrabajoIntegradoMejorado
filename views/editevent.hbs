@@ -1,40 +1,45 @@
-<h3> Registrar un nuevo evento </h3>
+<h3> Editar el evento "{{event.name}}" </h3>
 <hr />
 
-<form id="createEvent" name="createEvent" method="POST">
+<form id="editEvent" name="editEvent" method="POST">
   <div id="errorDiv" class="alert alert-warning hide">
     <span id="errorMessage"></span>
+  </div>
+  <div class="form-group hide">
+    <label class="col-md-3 control-label text-right" for="_id">ID: </label>
+    <div class="col-xs-12 col-md-6 input-group">
+      <input type="name" class="form-control" id="_id" name="_id" value="{{event._id}}" readonly required>
+    </div>
   </div>
   <div class="form-group">
     <label class="col-md-3 control-label text-right" for="name">Nombre: </label>
     <div class="col-xs-12 col-md-6 input-group">
-      <input type="name" class="form-control" id="name" name="name" placeholder="Nombre" required>
+      <input type="name" class="form-control" id="name" name="name" value="{{event.name}}" placeholder="Nombre" required>
     </div>
   </div>
   <div class="form-group">
     <label class="col-md-3 control-label text-right" for="description">Descripción:</label>
     <div class="col-xs-12 col-md-6 input-group">
-      <textarea class="form-control" rows="5" id="description"></textarea>
+      <textarea class="form-control" rows="5" id="description">{{event.description}}</textarea>
     </div>
   </div>
   <div class="form-group">
     <label class="col-md-3 control-label text-right" for="picture">URL Imagen: </label>
     <div class="col-xs-12 col-md-6 input-group">
-      <input type="text" class="form-control" id="picture" name="picture" placeholder="http://avatar.com/avatar.jpg" >
+      <input type="text" class="form-control" id="picture" name="picture" value="{{event.picture}}" placeholder="http://avatar.com/avatar.jpg" >
     </div>
   </div>
   <div class="form-group hide">
     <label class="col-md-3 control-label text-right" for="user">ID User: </label>
     <div class="col-xs-12 col-md-6 input-group">
-      <input type="text" class="form-control" id="user" name="user" placeholder="Usuario" >
+      <input type="text" class="form-control" id="user" name="user" value="{{event.user}}" placeholder="Usuario" readonly required>
     </div>
   </div>
-
   <!-- Date input-->
   <div class="form-group">
     <label class="col-md-3 control-label text-right" for="date">Fecha del evento: </label>
     <div class="col-xs-12 col-md-6 input-group date">
-      <input type="text" class="form-control datepicker" id="date" name="date" readonly required><span
+      <input type="text" class="form-control datepicker" id="date" name="date" value="{{event.date}}" readonly required><span
       class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
     </div>
   </div>
@@ -46,13 +51,23 @@
         <option>Cargando valores...</option>
       </select>
     </div>
+    <span id="tagHolder" class="hide">{{event.tag}}</span>
   </div>
 </form>
-<button id="sendButton" class="btn btn-default">Registrar nuevo evento</button>
+<button id="sendButton" class="btn btn-default">Editar evento</button>
 <br />
 
 <script>
-var selector = document.getElementById('tag')
+if (window.user != null){
+  if (document.forms.editEvent.user.value != window.user._id && window.user.role.name != "Administrador"){
+    window.location = "/";
+  }}else {
+    window.location = "/";
+  }
+
+document.forms.editEvent.date.value = new Date(document.forms.editEvent.date.value).toISOString().substr(0, 10);
+var op = document.getElementById('tagHolder').innerHTML;
+var selector = document.getElementById('tag');
 fetch('/api/tag', {
   method: 'GET'
 })
@@ -60,11 +75,14 @@ fetch('/api/tag', {
 .then(data => {
   selector.innerHTML = "";
   data.tags.map(tag => {
-    let text = document.createTextNode(tag.name)
-    let elem = document.createElement('option')
-    elem.value = tag._id
-    elem.appendChild(text)
-    selector.appendChild(elem)
+    let text = document.createTextNode(tag.name);
+    let elem = document.createElement('option');
+    elem.value = tag._id;
+    if (tag._id == op){
+      elem.selected = "selected";
+    }
+    elem.appendChild(text);
+    selector.appendChild(elem);
   })
 })
 </script>
@@ -76,7 +94,7 @@ var botonEnviar = document.getElementById('sendButton');
 
 if (window.user == null){
   avisoDiv.className = "alert alert-warning";
-  aviso.innerHTML = "No puedes crear un evento sin iniciar sesión";
+  aviso.innerHTML = "No puedes editar un evento sin iniciar sesión";
   botonEnviar.className = "btn btn-danger";
   botonEnviar.innerHTML = "Formulario desactivado";
 } else {
@@ -84,31 +102,32 @@ if (window.user == null){
   const myHeaders = new Headers();
   myHeaders.append('authorization', `Bearer ${localStorage.token}`);
 
-  const formEvent = document.forms.createEvent;
+  const formEdit = document.forms.editEvent;
 
   botonEnviar.addEventListener('click', event => {
     event.preventDefault();
     var formData = new FormData();
 
-    formData.append("name", formEvent.name.value);
-    formData.append("description", formEvent.description.value);
-    formData.append("picture", formEvent.picture.value);
-    formData.append("date", formEvent.date.value);
-    formData.append("user", localStorage.getItem('id'));
-    formData.append("tag", formEvent.tag.value);
+    formData.append("name", formEdit.name.value);
+    formData.append("description", formEdit.description.value);
+    formData.append("picture", formEdit.picture.value);
+    formData.append("date", formEdit.date.value);
+    formData.append("tag", formEdit.tag.value);
 
-    fetch('/api/event', {
-      method: 'POST',
+    var request = new Request('/api/event/'+document.forms.editEvent._id.value, {
+      method: 'PUT',
       headers: myHeaders,
       body: formData
-    })
+    });
+
+    fetch(request)
     .then(res => res.json())
     .then(data => {
       if (data.message == null){
         avisoDiv.className = "alert alert-success";
-        aviso.innerHTML = "¡Evento creado!";
+        aviso.innerHTML = "¡Evento actualizado!";
 
-        window.location = "/event/"+data.event._id;
+        window.location = "/event/"+formEdit._id.value;
       } else {
         avisoDiv.className = "alert alert-warning";
         aviso.innerHTML = data.message;

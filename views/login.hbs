@@ -1,3 +1,5 @@
+<h3> Iniciar sesión </h3>
+<hr />
 
 <form id="login" name="login" method="POST">
   <div id="errorDiv" class="alert alert-warning hide">
@@ -5,13 +7,13 @@
   </div>
   <div class="form-group">
     <label class="col-md-3 control-label text-right" for="email">Email address</label>
-    <div class="col-md-6 input-group">
+    <div class="col-xs-12 col-md-6 input-group">
       <input type="email" class="form-control" id="email" name="email" placeholder="Email">
     </div>
   </div>
   <div class="form-group">
     <label class="col-md-3 control-label text-right" for="password">Password</label>
-    <div class="col-md-6 input-group">
+    <div class="col-xs-12 col-md-6 input-group">
       <input type="password" class="form-control" id="password" name="password" placeholder="Password">
     </div>
   </div>
@@ -20,12 +22,12 @@
 
 
 <script type="text/javascript">
-const formLogin = document.querySelector('#login')
-var formData
+const formLogin = document.querySelector('#login');
+var formData;
 
 formLogin.addEventListener('submit', event => {
-  event.preventDefault()
-  formData = new FormData(formLogin)
+  event.preventDefault();
+  formData = new FormData(formLogin);
 
   fetch('/api/signin', {
     method: 'POST',
@@ -33,17 +35,18 @@ formLogin.addEventListener('submit', event => {
   })
   .then(res => res.json())
   .then(data => {
-    var aviso = document.getElementById('errorMessage')
-    var avisoDiv = document.getElementById('errorDiv')
+    var aviso = document.getElementById('errorMessage');
+    var avisoDiv = document.getElementById('errorDiv');
     if (data.message == "LOGGUED"){
-      avisoDiv.className = "alert alert-warning hide"
-      localStorage.setItem('token', data.token)
-      localStorage.setItem('id', data.id)
+      avisoDiv.className = "alert alert-warning hide";
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('id', data.id);
       retrieveUser();
     } else {
-      avisoDiv.className = "alert alert-warning"
-      aviso.innerHTML = data.message
+      avisoDiv.className = "alert alert-warning";
+      aviso.innerHTML = data.message;
     }
   })
 })
+
 </script>

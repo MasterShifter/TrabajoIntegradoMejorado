@@ -1,173 +1,188 @@
-<h2 class="col-md-offset-1 text-left">Información de la quedada: </h2>
+<h3 class="col-md-offset-1 text-left">Información de la quedada: </h3>
 <hr />
 
 <section id="eventHolder" class="comment-list">
+  <small id="eventId" class="hide">{{event._id}}</small>
+  <article class="row">
+    <div class="col-md-2 col-sm-2 hidden-xs">
+      <figure class="thumbnail">
+        <img class="img-responsive" src="{{event.picture}}" />
+      </figure>
+    </div>
+    <div class="col-md-10 col-sm-10">
+      <div class="panel panel-default arrow left">
+        <div class="panel-body">
+          <div class="panel-heading right"><div class="comment-date"><span class="glyphicon glyphicon-calendar"></span><time>{{event.date}}</time></div></div>
+          <div class="align-right"><a id="editButton" href="/editevent/{{event._id}}" class="btn btn-default">Editar</a><a id="deleteButton" href="/deleteevent/{{event._id}}" class="btn btn-danger">Eliminar</a></div>
+          <header class="text-left">
+            <div class="comment-user"><h3>{{event.name}}</h3></div>
+            <small><b>Autor:</b> <a id="autor" class="nickname" href="/user/{{event.user.nickname}}">{{event.user.nickname}}</a>. <b>Evento creado en:</b> <time>{{event.dateCreated}}</time></small>
+          </header>
+          <div class="comment-post">
+            <p class="text-left">
+              {{event.description}}
+            </p>
+          </div>
+        </div>
+        <hr />
+        <button id="joinButton" class="btn btn-info btn-lg btn-block">Unirse</button>
+        <hr />
+        <div class="panel-body text-center">
+          <h4 id="apuntados">Apuntados</h4>
+          <ul id="userList">
+
+          </ul>
+        </div>
+      </div>
+    </div>
+  </article>
 </section>
 
 <h2 class="col-md-offset-1 text-left">Comentarios: </h2>
 <hr />
 
 <section id="commentsHolder" class="comment-list">
+
+  {{#each event.eventmessage}}
+  <article class="row">
+    <div class="col-md-1 col-sm-1 col-md-offset-1 col-sm-offset-0 hidden-xs">
+      <figure class="thumbnail">
+        <img class="img-responsive" src="{{user.avatar}}" />
+      </figure>
+    </div>
+    <div class="col-md-10 col-sm-10">
+      <div class="panel panel-default arrow left">
+        <div class="panel-heading right"><div class="comment-date"><span class="glyphicon glyphicon-calendar"></span><time class="large">{{dateCreated}}</time></div></div>
+        <div class="panel-body">
+          <header class="text-left">
+            <div class="comment-user"><small><a class="nickname" href="/user/{{user.nickname}}"></span>{{user.nickname}}</a></small></div>
+          </header>
+          <div class="comment-post">
+            <p class="text-left">
+              {{content}}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+  {{/each}}
 </section>
+
 
 <section id="newComment">
   <h2 class="col-md-offset-1 text-left">Responder: </h2>
   <hr />
   <div class="row">
-  <div class="col-md-12">
-  <div class="widget-area no-padding blank">
-  <div class="status-upload">
-  <form id="formComment" name="formComment">
-  <textarea id="content" name="content" placeholder="Escribe aquí tu respuesta al evento" ></textarea>
-  </form>
-  <button id="commentSend" class="btn btn-success green">Comentar</button>
-  </div><!-- Status Upload  -->
-  </div><!-- Widget Area -->
-  </div>
+    <div class="col-md-12">
+      <div class="widget-area no-padding blank">
+        <div class="status-upload">
+          <form id="formComment" name="formComment">
+            <textarea id="content" name="content" placeholder="Escribe aquí tu respuesta al evento" ></textarea>
+          </form>
+          <button id="commentSend" class="btn btn-success btn-lg btn-block green">Comentar</button>
+        </div><!-- Status Upload  -->
+      </div><!-- Widget Area -->
+    </div>
   </div>
 </section>
 
 
-<script type="text/javascript">
 
-window.addEventListener('load', function(){
+<script>
+var joinButton = document.getElementById('joinButton');
 
-  const myHeaders = new Headers();
-  myHeaders.append('authorization', `Bearer ${localStorage.token}`)
+if (window.user != null){
+  var eventId = document.getElementById('eventId').innerHTML;
+  var apuntado = false;
 
-  var eventId = getParameterByName("eventId")
-
-  fetch('/api/event/'+eventId, {
-    method: 'GET',
-    headers: myHeaders
+  fetch('/api/usersbyevent/'+eventId, {
+    method: 'GET'
   })
   .then(res => res.json())
   .then(data => {
-
-    if (data.message == null){
-
-      var event = data.event
-
-      var item = document.createElement('article')
-      item.className = "row"
-      item.innerHTML =
-      `<!-- First Comment -->
-      <article class="row">
-      <div class="col-md-2 col-sm-2 hidden-xs">
-      <figure class="thumbnail">
-      <img class="img-responsive" src=${event.picture} />
-      </figure>
-      </div>
-      <div class="col-md-10 col-sm-10">
-      <div class="panel panel-default arrow left">
-      <div class="panel-body">
-      <div class="panel-heading right"><time class="comment-date" datetime=${dateToString(event.date)}><span class="glyphicon glyphicon-calendar"></span></i>${dateToString(event.date)}</time></div>
-      <header class="text-left">
-      <div class="comment-user"><h3>${event.name}</h3></div>
-      <small>Autor: ${event.user.nickname}. Evento creado en: ${dateToString(event.dateCreated)}</small>
-      </header>
-      <div class="comment-post">
-      <p class="text-left">
-      ${event.description}
-      </p>
-      </div>
-      <p class="text-center"><a href="#" class="btn btn-info btn-lg btn-block">Unirse</a></p>
-      </div>
-      </div>
-      </div>`;
-
-      document.getElementById('eventHolder').appendChild(item)
-
-      for (var i=0; i<event.eventmessage.length; i++){
-
-        var comment = document.createElement('article')
-        comment.className = "row"
-        comment.innerHTML =
-        `  <!-- Second Comment Reply -->
-        <div class="col-md-1 col-sm-1 col-md-offset-1 col-sm-offset-0 hidden-xs">
-        <figure class="thumbnail">
-        <img class="img-responsive" src=${event.eventmessage[i].user.avatar} />
+    if (data.userjoined.length != 0){
+      data.userjoined.map(joined => {
+        if (joined.user.nickname == window.user.nickname){
+          apuntado=true;
+        }
+        var userLink = document.createElement('li');
+        userLink.innerHTML =
+        `<div class="col-xs-2">
+        <a class="nickname" href=${"/user/"+joined.user.nickname}>
+        <figure>
+        <img class="img-circle img-responsive avatar" src=${joined.user.avatar} />
+        <figcaption><small>${joined.user.nickname}</small></figcaption>
         </figure>
-        </div>
-        <div class="col-md-10 col-sm-10">
-        <div class="panel panel-default arrow left">
-        <div class="panel-heading right"><time class="comment-date" datetime=${dateToString(event.eventmessage[i].dateCreated)}><span class="glyphicon glyphicon-calendar"></span> ${dateToString(event.eventmessage[i].dateCreated)}</time></div>
-        <div class="panel-body">
-        <header class="text-left">
-        <div class="comment-user"><small><a href=${"user/"+event.user.nickname}><span class="glyphicon glyphicon-user"></span>${event.eventmessage[i].user.nickname}</a></small></div>
+        </a>
+        </div>`;
 
-        </header>
-        <div class="comment-post">
-        <p class="text-left">
-        ${event.eventmessage[i].content}
-        </p>
-        </div>
-        </div>`
+        document.getElementById('userList').appendChild(userLink);
+      })
 
-        document.getElementById('commentsHolder').appendChild(comment)
-      }
-
-      if (window.user == null){
-        document.getElementById('newComment').innerHTML = "<span class='alert alert-info'>Debes estar logueado para comentar</span>";
-      }
     } else {
-
-      var item = document.createElement('span')
-      item.className = "row"
-      item.innerHTML =
-      `<span class="alert alert-warning">El evento no existe</span>`;
-
-      document.getElementById('eventHolder').appendChild(item);
-
-      document.getElementById('newComment').innerHTML = "<span class='alert alert-info'>No se puede comentar</span>";
+      document.getElementById('apuntados').innerHTML = "No hay apuntados";
     }
+    const myHeaders = new Headers();
+    myHeaders.append('authorization', `Bearer ${localStorage.token}`);
+    var formJoin = new FormData();
+
+    var url= "/api/userjoined/new";
+    if (apuntado){
+      joinButton.className="btn btn-danger btn-lg btn-block";
+      joinButton.innerHTML="Salirse";
+      url= "/api/userjoined/delete";
+    }
+    joinButton.addEventListener('click', function(){
+
+      formJoin.append("user", localStorage.getItem('id'));
+      formJoin.append("event", eventId);
+
+      fetch(url, {
+        method: 'POST',
+        headers: myHeaders,
+        body: formJoin
+      })
+      .then(res => res.json())
+      .then(data => {
+        var aviso = document.getElementById('errorMessage');
+        var avisoDiv = document.getElementById('errorDiv');
+        if (data.message != null){
+          alert(data.message);
+        } else {
+          location.reload();
+        }
+      })
+    });
   })
-}, false);
 
-
-function getParameterByName(name, url) {
-  if (!url) url = window.location.href;
-  name = name.replace(/[\[\]]/g, "\\$&");
-  var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-  results = regex.exec(url);
-  if (!results) return null;
-  if (!results[2]) return '';
-  return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
-
-function dateToString(fecha) {
-  var meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-
-  var date = new Date(fecha);
-  var dateString = date.getDate()+"/"+meses[date.getMonth()]+"/"+date.getFullYear();
-
-  return dateString;
-}
-
 </script>
 
 
-
 <script type="text/javascript">
+replaceAllDateFormats();
+if (window.user == null){
+  document.getElementById('newComment').innerHTML = "<span class='alert alert-info'>Debes estar logueado para comentar</span>";
+}
 
 window.addEventListener('load', function(){
 
   const myHeaders = new Headers();
-  myHeaders.append('authorization', `Bearer ${localStorage.token}`)
+  myHeaders.append('authorization', `Bearer ${localStorage.token}`);
 
-  const formComment = document.forms.formComment
+  const formComment = document.forms.formComment;
 
   document.getElementById('commentSend').addEventListener('click', event => {
     event.preventDefault();
 
     var formData = new FormData();
-    var eventId = getParameterByName("eventId");
+    var eventId = document.getElementById("eventId").innerHTML;
 
     formData.append("content", formComment.content.value);
     formData.append("user", localStorage.getItem('id'));
     formData.append("event", eventId);
 
-    console.log("HOLIWI")
     fetch('/api/eventmessages', {
       method: 'POST',
       headers: myHeaders,
@@ -178,12 +193,24 @@ window.addEventListener('load', function(){
       var aviso = document.getElementById('errorMessage');
       var avisoDiv = document.getElementById('errorDiv');
       if (data.message != null){
-        //location.reload();
-        alert("HOLIWI")
+        alert(data.message);
       } else {
-        alert("HOLIWOOO")
+        location.reload();
       }
     })
   })
 })
+
+var eventUser = document.getElementById('autor').innerHTML;
+
+if (window.user != null){
+if (window.user.nickname != eventUser && window.user.role.name != "Administrador"){
+  document.getElementById('editButton').parentNode.className="hide";
+  console.log('NO PUEDES EDITAR')
+
+}
+} else {
+  document.getElementById('editButton').parentNode.className="hide";
+  console.log('NO PUEDES EDITAR')
+}
 </script>
