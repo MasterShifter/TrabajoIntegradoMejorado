@@ -11,7 +11,7 @@ El servidor también ofrece un modelo vista controlador para consumir la API, la
 - Ver los eventos o usuarios disponibles.
 - Ver los perfiles de otros usuarios o editarlos (si eres admin), por defecto solo puedes editar el tuyo propio.
 - Ver, crear, editar o eliminar eventos, estas dos últimas solo si eres admin o el creador del evento.
-- Comentar en los eventos.
+- Comentar o unirte en los eventos.
 
 # ¿Cómo se despliega?
 Necesitamos descargar Node.js de su página oficial y una vez instalado, con la consola de comandos en el directorio del proyecto escribimos
