@@ -3,6 +3,7 @@
 const services = require('../services')
 const User = require('../models/user')
 const Event = require('../models/event')
+const Eventmessage = require('../models/eventmessage')
 
 function isAuth (req, res, next) {
   if (!req.headers.authorization) {
@@ -33,7 +34,7 @@ function isAdmin (req, res, next) {
 
   decode.then(response => {
     req.user = response
-    User.findById(req.user, (err, user) => {
+    User.findById(req.user, 'role', (err, user) => {
       if (err) return res.status(500).send({message: `Error al realizar la peticion: ${err}`})
       if (!user) return res.status(404).send({message: `El usuario no existe`})
 
@@ -65,8 +66,8 @@ function canEditTheUser (req, res, next) {
   var decode = services.decodeToken(token)
   decode.then(response => {
     req.user = response
-    User.findById(req.user, (err, user) => {
-      if (err) return res.status(500).send({message: `Error al realizar la peticion: ${err}`})
+    User.findById(req.user, '_id role', (err, user) => {
+      if (err) return res.status(500).send({message: `El ID de la url podría ser incorrecto`})
       if (!user) return res.status(404).send({message: `El usuario no existe`})
 
       User.populate(user, {path: "role"},function(err, user){
@@ -99,19 +100,16 @@ function canEditTheEvent (req, res, next) {
   var decode = services.decodeToken(token)
   decode.then(response => {
     req.user = response
-    console.log("usuario de la peticion: "+req.user)
-    User.findById(req.user, (err, user) => {
+    User.findById(req.user, '_id role', (err, user) => {
       if (err) return res.status(500).send({message: `Error al realizar la peticion: ${err}`})
       if (!user) return res.status(404).send({message: `El usuario no existe`})
 
       User.populate(user, {path: "role"},function(err, user){
         if (err) return res.status(500).send({message: `Error al realizar la peticion: ${err}`})
 
-          console.log("usuario de la peticion obtenido: "+user.nickname+" "+user.role.name)
-        Event.findById(eventId, (err, event) => {
+        Event.findById(eventId, '_id user', (err, event) => {
           if (err) return res.status(500).send({message: `Error al realizar la peticion: ${err}`})
           if (!event) return res.status(404).send({message: `El evento no existe`})
-              console.log("usuario del evento: "+event.user)
           if (user.role.name == "Administrador" || user._id.equals(event.user)){
             next()
           } else {
@@ -126,9 +124,63 @@ function canEditTheEvent (req, res, next) {
   })
 }
 
+
+function canEditTheComment (req, res, next) {
+  let commentId = req.params.commentId
+
+  if (!req.headers.authorization) {
+    return res.status(403).send({ message: 'No tienes autorización administrativa' })
+  }
+
+  const token = req.headers.authorization.split(' ')[1]
+
+  var decode = services.decodeToken(token)
+  decode.then(response => {
+    req.user = response
+    User.findById(req.user, '_id role nickname', (err, user) => {
+      if (err) return res.status(500).send({message: `Error al realizar la peticion: ${err}`})
+      if (!user) return res.status(404).send({message: `El usuario no existe`})
+
+      User.populate(user, {path: "role"},function(err, user){
+        if (err) return res.status(500).send({message: `Error al realizar la peticion: ${err}`})
+
+        Eventmessage.findById(commentId, '_id event user', (err, eventmessage) => {
+          if (err) return res.status(500).send({message: `Error al realizar la peticion: ${err}`})
+          if (!eventmessage) return res.status(404).send({message: `El comentario no existe`})
+
+          Event.findById(eventmessage.event, '_id user', (err, event) => {
+            if (err) return res.status(500).send({message: `Error al realizar la peticion: ${err}`})
+            if (!event) return res.status(404).send({message: `El evento no existe`})
+
+            User.findById(eventmessage.user, '_id nickname', (err, userComment) => {
+              if (err) return res.status(500).send({message: `Error al realizar la peticion: ${err}`})
+              if (!userComment) return res.status(404).send({message: `El usuario del comentario no existe`})
+
+              console.log("rol del emisor: "+user.role.name)
+              console.log("usuario del comentario: "+userComment._id)
+              console.log("usuario del evento: "+event.user)
+
+              if (user.role.name == "Administrador" || user._id.equals(event.user) || user._id.equals(userComment._id)){
+                next()
+              } else {
+                return res.status(404).send({message: `El usuario debe ser admin, creador del evento o del comentario`})
+              }
+
+            });
+          });
+        });
+      });
+    })
+  })
+  .catch(response => {
+    res.status(response.status)
+  })
+}
+
 module.exports = {
   isAuth,
   isAdmin,
   canEditTheUser,
-  canEditTheEvent
+  canEditTheEvent,
+  canEditTheComment
 }

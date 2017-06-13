@@ -1,83 +1,227 @@
-<h3>Nuevo usuario</h3>
-<hr />
+<div class="row">
+  <h3>Nuevo usuario</h3>
+  <div class="col-xs-12">
+    <div id="errorDiv" class="alert alert-warning hide">
+      <span id="errorMessage"></span>
+    </div>
+    <form id="register" name="register" method="POST">
+      <div class="form-group">
+        <label class="col-md-3 control-label text-right" for="nickname">Apodo: </label>
+        <div class="col-xs-12 col-md-6 input-group">
+          <input type="text" class="form-control" id="nickname" name="nickname" placeholder="Nickname" maxlength="20" oninput="checkNickname();" required>
+          <div class="col-xs-12 text-left">
+            <div class="text-info">
+              <span id="nickErI" class=''></span> <span id="nickErT"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 control-label text-right" for="displayName">Nombre: </label>
+        <div class="col-xs-12 col-md-6 input-group">
+          <input type="text" class="form-control" id="displayName" name="displayName" placeholder="Nombre" maxlength="45" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 control-label text-right" for="email">Correo electrónico: </label>
+        <div class="col-xs-12 col-md-6 input-group">
+          <input type="email" class="form-control" id="email" name="email" placeholder="Correo electrónico" maxlength="50" oninput="checkEmail();" required>
+          <div class="col-xs-12 text-left">
+            <div class="text-info">
+              <span id="emaErI" class=''></span> <span id="emaErT"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 control-label text-right" for="password">Contraseña: </label>
+        <div class="col-xs-12 col-md-6 input-group">
+          <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña" minlength="4" maxlength="50" oninput="checkPassword();" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 control-label text-right" for="repassword">Repite la contraseña: </label>
+        <div class="col-xs-12 col-md-6 input-group">
+          <input type="password" class="form-control" id="repassword" name="repassword" placeholder="Contraseña" minlength="4" maxlength="50" oninput="checkPassword();" required>
+          <div class="col-xs-12 text-left">
+            <div class="text-info">
+              <span id="passErI" class=''></span> <span id="passErT"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Date input-->
+      <div class="form-group">
+        <label class="col-md-3 control-label text-right" for="birthdate">Fecha de nacimiento: </label>
+        <div class="col-xs-12 col-md-6 input-group date">
+          <input type="text" class="form-control datepicker" style="background-color: white;" name="birthdate" placeholder="yyyy-mm-dd" readonly required><span
+          class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+        </div>
+      </div>
 
-<form id="register" name="register" method="POST">
-  <div id="errorDiv" class="alert alert-warning hide">
-    <strong>¡Error!</strong> <span id="errorMessage"></span>
+      <div class="form-group">
+        <label class="col-md-3 control-label text-right" for="genre">Género:</label>
+        <div class="col-xs-12 col-md-6 input-group">
+          <select class="form-control" id="genre" name="genre">
+            <option value="No especificado">No especificado</option>
+            <option value="Hombre">Hombre</option>
+            <option value="Mujer">Mujer</option>
+          </select>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-default btn-lg btn-block">Registrar nuevo usuario</button>
+    </form>
+    <br />
   </div>
-  <div class="form-group">
-    <label class="col-md-3 control-label text-right" for="nickname">Nickname: </label>
-    <div class="col-xs-12 col-md-6 input-group">
-      <input type="nickname" class="form-control" id="nickname" name="nickname" placeholder="Nickname" required>
-    </div>
-  </div>
-  <div class="form-group">
-    <label class="col-md-3 control-label text-right" for="displayName">Nombre: </label>
-    <div class="col-xs-12 col-md-6 input-group">
-      <input type="displayName" class="form-control" id="displayName" name="displayName" placeholder="Nombre" required>
-    </div>
-  </div>
-  <div class="form-group">
-    <label class="col-md-3 control-label text-right" for="email">Correo electrónico: </label>
-    <div class="col-xs-12 col-md-6 input-group">
-      <input type="email" class="form-control" id="email" name="email" placeholder="Correo electrónico" required>
-    </div>
-  </div>
-  <div class="form-group">
-    <label class="col-md-3 control-label text-right" for="password">Contraseña: </label>
-    <div class="col-xs-12 col-md-6 input-group">
-      <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña" required>
-    </div>
-  </div>
-  <!-- Date input-->
-  <div class="form-group">
-    <label class="col-md-3 control-label text-right" for="birthdate">Fecha de nacimiento: </label>
-    <div class="col-xs-12 col-md-6 input-group date">
-      <input type="text" class="form-control datepicker" name="birthdate" readonly required><span
-      class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label class="col-md-3 control-label text-right" for="genre">Género:</label>
-    <div class="col-xs-12 col-md-6 input-group">
-      <select class="form-control" id="genre" name="genre">
-        <option value="No especificado">No especificado</option>
-        <option value="Hombre">Hombre</option>
-        <option value="Mujer">Mujer</option>
-      </select>
-    </div>
-  </div>
-  <button type="submit" class="btn btn-default">Registrar nuevo usuario</button>
-</form>
-
-<br />
+</div>
 
 
 <script type="text/javascript">
-const formLogin = document.querySelector('#register');
+const formLogin = document.forms.register;
+var aviso = document.getElementById('errorMessage');
+var avisoDiv = document.getElementById('errorDiv');
 var formData;
 
-formLogin.addEventListener('submit', event => {
+formLogin.addEventListener('submit', (event) => {
   event.preventDefault();
-  formData = new FormData(formLogin);
 
-  fetch('/api/signup', {
-    method: 'POST',
-    body: formData
-  })
-  .then(res => res.json())
-  .then(data => {
-    var aviso = document.getElementById('errorMessage');
-    var avisoDiv = document.getElementById('errorDiv');
-    if (data.message == null){
-      avisoDiv.className = "alert alert-warning hide";
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('id', data.id);
-    } else {
-      avisoDiv.className = "alert alert-warning";
-      aviso.innerHTML = data.message;
-    }
-  })
+  if (document.getElementsByClassName('text-success').length != 3){
+    avisoDiv.className = "alert alert-warning text-left";
+    aviso.innerHTML = "<strong>¡Error!</strong> Hay campos comprobados que no son válidos (te están informando de ello)";
+  } else if (document.forms.register.birthdate.value.length == 0){
+    avisoDiv.className = "alert alert-warning text-left";
+    aviso.innerHTML = "<strong>¡Error!</strong> El cumpleaños no puede estar vacio";
+    document.forms.register.birthdate.focus();
+  } else {
+    formData = new FormData(formLogin);
+
+    fetch('/api/signup', {
+      method: 'POST',
+      body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.message == "LOGGUED"){
+        avisoDiv.className = "alert alert-success";
+        aviso.innerHTML = "Usuario registrado";
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('id', data.id);
+        retrieveUser();
+
+        setTimeout(function(){ window.location = "/"; }, 2000);
+      } else {
+        avisoDiv.className = "alert alert-warning text-left";
+        if (Array.isArray(data.message)){
+          aviso.innerHTML ="<h4>Errores</h4><ul>";
+          for (var i=0; i<data.message.length; i++){
+            aviso.innerHTML +="<li>"+data.message[i]+"</li>";
+          }
+          aviso.innerHTML +="</ul>";
+        } else {
+          aviso.innerHTML = data.message;
+        }
+      }
+    })
+  }
 })
+</script>
+
+<script>
+
+function checkNickname(){
+  var spanImage = document.getElementById('nickErI');
+  var spanText = document.getElementById('nickErT');
+  spanImage.parentNode.className = 'text-info';
+  spanImage.className = 'fa fa-circle-o-notch fa-spin';
+  spanText.innerHTML = 'Comprobando';
+
+  if (document.forms.register.nickname.value.length == 0){
+    spanImage.parentNode.className = 'text-danger';
+    spanImage.className = 'glyphicon glyphicon-remove';
+    spanText.innerHTML = 'No puede estar vacio';
+  } else {
+
+    fetch('/api/user/nick/'+document.forms.register.nickname.value, {
+      method: 'GET'
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.message == "Yes"){
+        spanImage.parentNode.className = 'text-danger';
+        spanImage.className = 'glyphicon glyphicon-remove';
+        spanText.innerHTML = 'Está en uso';
+      } else if (data.message == "No"){
+        spanImage.parentNode.className = 'text-success';
+        spanImage.className = 'glyphicon glyphicon-ok';
+        spanText.innerHTML = 'Está disponible';
+      } else {
+        spanImage.parentNode.className = 'text-danger';
+        spanImage.className = 'glyphicon glyphicon-remove';
+        spanText.innerHTML = 'Especifica un nick';
+      }
+    })
+  }
+}
+
+
+function checkEmail(){
+  var spanImage = document.getElementById('emaErI');
+  var spanText = document.getElementById('emaErT');
+  spanImage.parentNode.className = 'text-info';
+  spanImage.className = 'fa fa-circle-o-notch fa-spin';
+  spanText.innerHTML = 'Comprobando';
+
+  if (document.forms.register.email.value.length == 0){
+    spanImage.parentNode.className = 'text-danger';
+    spanImage.className = 'glyphicon glyphicon-remove';
+    spanText.innerHTML = 'No puede estar vacio';
+  } else {
+
+    fetch('/api/user/email/'+document.forms.register.email.value, {
+      method: 'GET'
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.message == "Yes"){
+        spanImage.parentNode.className = 'text-danger';
+        spanImage.className = 'glyphicon glyphicon-remove';
+        spanText.innerHTML = 'Está en uso';
+      } else if (data.message == "No"){
+        spanImage.parentNode.className = 'text-success';
+        spanImage.className = 'glyphicon glyphicon-ok';
+        spanText.innerHTML = 'Está disponible';
+      } else {
+        spanImage.parentNode.className = 'text-danger';
+        spanImage.className = 'glyphicon glyphicon-remove';
+        spanText.innerHTML = 'Especifica un email';
+      }
+    })
+  }
+}
+
+function checkPassword(){
+  var spanImage = document.getElementById('passErI');
+  var spanText = document.getElementById('passErT');
+  spanImage.parentNode.className = 'text-info';
+  spanImage.className = 'fa fa-circle-o-notch fa-spin';
+  spanText.innerHTML = 'Comprobando';
+
+  if (document.forms.register.password.value.length == 0 || document.forms.register.repassword.value.length == 0){
+    spanImage.parentNode.className = 'text-danger';
+    spanImage.className = 'glyphicon glyphicon-remove';
+    spanText.innerHTML = 'Las dos contraseñas deben estar rellenadas';
+  } else {
+
+    if (document.forms.register.password.value == document.forms.register.repassword.value){
+      spanImage.parentNode.className = 'text-success';
+      spanImage.className = 'glyphicon glyphicon-ok';
+      spanText.innerHTML = 'Las contraseñas coinciden';
+    } else {
+      spanImage.parentNode.className = 'text-danger';
+      spanImage.className = 'glyphicon glyphicon-remove';
+      spanText.innerHTML = 'Las contraseñas deben coincidir';
+    }
+  }
+}
+
 </script>

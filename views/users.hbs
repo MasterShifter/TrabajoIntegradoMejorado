@@ -1,19 +1,25 @@
+<div class="row">
+  <h3>Usuarios</h3>
 
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-sm-12">
-
-
-
-      <h2 class="text-left">Usuarios encontrados</h2>
-      <hr />
-      <ul id="userHolder" class="users_list">
-
-      </ul>
+  <h3>Filtrado</h3>
+  <br />
+  <form id="filter" name="filter" action="#" method="POST">
+    <div class="form-group">
+      <label class="col-sm-3 control-label text-right" for="coincidence">Nombre: </label>
+      <div class="col-xs-12 col-sm-6 input-group">
+        <input type="coincidence" class="form-control" name="coincidence" placeholder="Coincidencia" oninput="filtrarUsuarios();" />
+      </div>
     </div>
-  </div>
+  </form>
 </div>
 
+<div class="row">
+  <h3>Resultado</h3>
+  <div class="col-sm-12">
+    <ul id="userHolder" class="users_list">
+    </ul>
+  </div>
+</div>
 
 <script type="text/javascript">
 
@@ -37,9 +43,9 @@ fetch('/api/user', {
     }
 
     var item = document.createElement('li');
-    item.className = 'col-xs-2 img-thumbnail user-card';
+    item.className = 'col-xs-2 img-thumbnail user-card loading-init loading';
     item.innerHTML =
-    `<a href=${'user/'+user.nickname}>
+    `<a href=${'/user/'+user.nickname}>
     <figure>
     <img class="img-responsive avatar" src=${user.avatar} alt=${user.nickname} />
     <figcaption class=${genero}><span class="nickname">${user.displayName} (${calcularEdad(user.birthdate)})</span></figcaption>
@@ -47,8 +53,24 @@ fetch('/api/user', {
     </a>`;
 
     document.getElementById('userHolder').appendChild(item);
+
+    resizeAvatars();
   })
 
 })
+
+
+
+function filtrarUsuarios(){
+  var coincidence = document.forms.filter.coincidence.value;
+  var profiles = document.getElementById('userHolder').getElementsByTagName('figure');
+
+  for (var i=0; i<profiles.length; i++){
+    if (coincidence.length == 0){ profiles[i].className = ""; }
+    else if (profiles[i].getElementsByClassName('nickname')[0].innerHTML.toLowerCase().includes(coincidence.toLowerCase())){ profiles[i].className = ""; }
+    else { profiles[i].className = "ghost"; }
+  }
+
+}
 
 </script>

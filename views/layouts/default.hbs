@@ -5,19 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
   <title>Planizator</title>
 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link type="text/css" rel="stylesheet" href="/public/css/bootstrap.min.css"  media="screen,projection"/>
-
   <link href="/public/css/default.css" type="text/css" rel="stylesheet" media="screen,projection" />
-
   <link rel="stylesheet" href="/public/css/bootstrap-datepicker.min.css">
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 <body>
-  <div id="custom-bootstrap-menu" class="navbar navbar-default" role="navigation">
+  <div id="custom-bootstrap-menu" class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container-fluid">
-      <div class="col-lg-8 col-lg-offset-2">
+      <div class="col-lg-8 col-lg-offset-2 no-padding">
         <div class="navbar-header">
           <a class="navbar-brand" href="/">Planizator</a>
           <button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -31,11 +30,11 @@
         <ul class="nav navbar-nav navbar-left">
           <li><a href="/events">Eventos</a></li>
           <li><a href="/users">Usuarios</a></li>
-          <li><a href="#">Acerca de</a></li>
+          <li><a href="/about">Acerca de</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span>&nbsp;<span>Iniciar sesión</span></a></li>
-          <li><a href="/register"><span class="glyphicon glyphicon-log-in"></span>&nbsp;<span>Registrarse</span></a></li>
+          <li id="register"><a href="/register"><span class="glyphicon glyphicon-log-in"></span>&nbsp;<span>Registrarse</span></a></li>
         </ul>
       </div>
     </div>
@@ -46,39 +45,32 @@
 
 <div class="container-fluid text-center">
 
-  <div class="row">
-    <!--
-    <div class="col-sm-2 sidenav">
-    <p><a href="#">Link</a></p>
-    <p><a href="#">Link</a></p>
-    <p><a href="#">Link</a></p>
-  </div>
--->
-<!-- MAIN CONTAINER -->
-<div class="col-lg-8 col-lg-offset-2 contenedor-principal">
-  <br />
-  {{{body}}}
-  <br />
-</div>
+  <div class="row background">
+    <!-- MAIN CONTAINER -->
+    <div class="col-lg-8 col-lg-offset-2 contenedor-principal">
+      {{{body}}}
+    </div>
 
-<div class="col-lg-2 sidenav">
-  <div class="well">
-    <p>ADS</p>
+    <div class="col-lg-2 sidenav">
+      <div class="well">
+        <p>ADS</p>
+      </div>
+      <div class="well">
+        <p>ADS</p>
+      </div>
+    </div>
   </div>
-  <div class="well">
-    <p>ADS</p>
-  </div>
-</div>
-</div>
-<!-- row -->
+  <!-- row -->
 </div>
 <!-- container -->
 
 <!-- FOOTER -->
 <footer class="container-fluid text-center footer">
-<h4>Planizator 2017</h4>
-<p class="col-lg-6">Web de trabajo integrado para el ciclo superior de Desarrollo Web.</p>
-<p class="col-lg-6">Autor: José María Aparicio</p>
+  <div class="col-lg-8 col-lg-offset-2">
+    <h4>Planizator 2017</h4>
+    <p class="col-lg-6">Web de trabajo integrado para el ciclo superior de Desarrollo Web.</p>
+    <p class="col-lg-6">Autor: José María Aparicio</p>
+  </div>
 </footer>
 
 <script src="/public/js/jquery-3.2.1.min.js"></script>
@@ -87,6 +79,25 @@
 <script src="/public/js/bootstrap-datepicker.js"></script>
 <script src="/public/locales/bootstrap-datepicker.es.min.js"></script>
 <script src="/public/js/datepicker.js"></script>
+
+<script>
+$(document).ready(function(){
+  $('[data-toggle="tooltip"]').tooltip();
+
+  var url = window.location;
+  $('ul.nav a[href="'+url+'"]').parent().addClass('active');
+  $('ul.nav a').filter(function(){
+    return this.href == url;
+  }).parent().addClass('active');
+});
+if (window.location.pathname == "/users"){
+  $(window).resize(resizeAvatars);
+}
+
+function resizeAvatars(){
+  $('.avatar').css({'height': $('.avatar').css('width')});
+}
+</script>
 
 </body>
 </html>

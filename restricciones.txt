@@ -1,21 +1,24 @@
 Usuario
-nickname: letras _ numeros	LIMITE: 12 carácteres
-displayName: letras, tildes, comas, guiones... LIMITE: 30 carácteres
-email: LIMITE: 100 carácteres
-avatar: LIMITE: 100 carácteres
-description: LIMITE: NO HAY
-birthdate: LIMITE: 16 años
-password: ninguna restriccion LIMITE: min 4 max 20 carácteres
-
+nickname: letras _ numeros	LIMITE: 20 carï¿½cteres
+displayName: letras, tildes, comas, guiones... LIMITE: 45 carï¿½cteres
+email: LIMITE: 50 carï¿½cteres
+avatar: LIMITE: 100 carï¿½cteres
+description: LIMITE: 500
+birthdate: LIMITE: 16 aï¿½os
+password: ninguna restriccion LIMITE: min 4 max 50 carï¿½cteres
 
 Evento
-name: letras, tildes, comas, guiones... LIMITE: 30 carácteres
-picture: LIMITE: 100 carácteres
+name: letras, tildes, comas, guiones... LIMITE: min 8 max 30 carï¿½cteres
+picture: LIMITE: 100 carï¿½cteres
 date: LIMITE: futuro
-description: LIMITE: NO HAY
+description: LIMITE: Min 50 Max 500
 
 
 Mensaje
-content: LIMITE: Min 10 carácteres Max 500 carácteres
+content: LIMITE: Min 10 carï¿½cteres Max 500 carï¿½cteres
 
 
+mongodump -d <database_name> -o <directory_backup>
+And to "restore/import" that, i used (from directory_backup/dump/):
+
+mongorestore -d <database_name> <directory_backup>

@@ -1,20 +1,21 @@
-
-window.user = JSON.parse(localStorage.getItem('user'))
+window.user = JSON.parse(localStorage.getItem('user'));
 
 if  (window.user != null){
-  var opPerfil = document.createElement('li')
-  var perfil = document.createElement('a')
-  perfil.href = `/user/${window.user.nickname}`
-  perfil.innerHTML = window.user.displayName.split(' ')[0] || window.user.nickname
-  opPerfil.appendChild(perfil)
+  var opPerfil = document.createElement('li');
+  var perfil = document.createElement('a');
+  perfil.href = `/user/${window.user.nickname}`;
+  perfil.innerHTML = window.user.displayName.substring(0, 15) || window.user.nickname;
+  opPerfil.appendChild(perfil);
 
-  var menu = document.getElementById('menu').getElementsByTagName('ul')
+  var menu = document.getElementById('menu').getElementsByTagName('ul');
 
-  menu[0].insertBefore(opPerfil, menu[0].getElementsByTagName('li')[0])
+  menu[0].insertBefore(opPerfil, menu[0].getElementsByTagName('li')[0]);
 
-  menu[1].getElementsByTagName('span')[1].innerHTML = 'Cerrar sesión'
-  menu[1].getElementsByTagName('a')[0].href = '/'
-  menu[1].getElementsByTagName('a')[0].onclick = cerrarSesion
+  menu[1].getElementsByTagName('span')[1].innerHTML = 'Cerrar sesión';
+  menu[1].getElementsByTagName('a')[0].href = '/closesion';
+  menu[1].getElementsByTagName('a')[0].onclick = cerrarSesion;
+
+  document.getElementById('register').className = "hide";
 }
 
 
@@ -34,9 +35,11 @@ function retrieveUser(event){
 }
 
 function cerrarSesion(event){
-  localStorage.removeItem('token')
-  localStorage.removeItem('id')
-  localStorage.removeItem('user')
+  event.preventDefault();
+  localStorage.removeItem('token');
+  localStorage.removeItem('id');
+  localStorage.removeItem('user');
+  window.location = window.location;
 }
 
 
@@ -76,55 +79,55 @@ function pad (str, max) {
 }
 
 
-function calcularEdad(fecha)
+function calcularEdad(date)
 {
   // Si la fecha es correcta, calculamos la edad
-  var values= new Date(fecha);
-  var dia = values.getDate();
-  var mes = values.getMonth()+1;
-  var ano = values.getFullYear();
+  var values= new Date(date);
+  var day = values.getDate();
+  var month = values.getMonth()+1;
+  var year = values.getFullYear();
 
   // cogemos los valores actuales
-  var fecha_hoy = new Date();
-  var ahora_dia = fecha_hoy.getDate();
-  var ahora_mes = fecha_hoy.getMonth()+1;
-  var ahora_ano = fecha_hoy.getFullYear();
+  var today = new Date();
+  var today_day = today.getDate();
+  var today_month = today.getMonth()+1;
+  var today_year = today.getFullYear();
 
   // realizamos el calculo
-  var edad = ahora_ano - ano;
-  if ( ahora_mes < mes )
+  var age = today_year - year;
+  if ( today_month < month )
   {
-    edad--;
+    age--;
   }
-  if ((mes == ahora_mes) && (ahora_dia < dia))
+  if ((month == today_month) && (today_day < day))
   {
-    edad--;
+    age--;
   }
-  if (edad > 1900)
+  if (age > 1900)
   {
-    edad -= 1900;
+    age -= 1900;
   }
 
   // calculamos los meses
-  var meses=0;
-  if(ahora_mes>mes)
-  meses=ahora_mes-mes;
-  if(ahora_mes<mes)
-  meses=12-(mes-ahora_mes);
-  if(ahora_mes==mes && dia>ahora_dia)
-  meses=11;
+  var months=0;
+  if(today_month>month)
+  months=today_month-month;
+  if(today_month<month)
+  months=12-(month-today_month);
+  if(today_month==month && day>today_day)
+  months=11;
 
   // calculamos los dias
-  var dias=0;
-  if(ahora_dia>dia)
-  dias=ahora_dia-dia;
-  if(ahora_dia<dia)
+  var days=0;
+  if(today_day>day)
+  days=today_day-day;
+  if(today_day<day)
   {
-    ultimoDiaMes=new Date(ahora_ano, ahora_mes, 0);
-    dias=ultimoDiaMes.getDate()-(dia-ahora_dia);
+    lastMonthDay=new Date(today_year, today_month, 0);
+    days=lastMonthDay.getDate()-(day-today_day);
   }
 
-  return edad;
+  return age;
 }
 
 
@@ -154,7 +157,6 @@ function getURLParameters(paramName)
         {
             if (arrParamNames[i] == paramName)
             {
-                //alert("Parameter:" + arrParamValues[i]);
                 return arrParamValues[i];
             }
         }

@@ -1,50 +1,48 @@
-
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-sm-12">
-      <div id="profile">
-
-        <div class="col-sm-3 center-block">
-          <br />
-          <img class="img-responsive" src={{{user.avatar}}}>
-        </div>
-        <div class="col-sm-9">
-          <h2 class="text-center">Perfil de {{user.displayName}} <div><a id="editButton" class="btn btn-default" href="/edituser/{{user._id}}">Editar</a></div></h2>
-          <hr />
-          <div class="text-left">
-            <div class="hide">
-              <strong>Id:</strong> <span id="userId">{{user._id}}</span>
-              <br />
-            </div>
-            <strong>Apodo:</strong> <span>{{user.nickname}}</span>
-            <br />
-            <strong>Fecha de cumpleaños:</strong> <time>{{user.birthdate}}</time>
-            <br />
-            <strong>Edad:</strong> <span id="edad">{{user.birthdate}}</span>
-            <br />
-            <strong>Se registró el:</strong> <time>{{user.signUpDate}}</time>
-            <br />
-            <strong>Rol:</strong> <span>{{user.role.name}}</span>
-            <br />
-            <strong>Género:</strong> <span>{{user.genre}}</span>
-            <br />
-          </div>
-        </div>
-        <div class="col-sm-12">
-          <h2 class="text-center">Descripción</h2>
-          <hr />
-          <div class="text-left">
+<div class="row">
+  <h3 class="text-left">Perfil de {{user.displayName}}</h3>
+  <div id="profile">
+    <div class="col-sm-3">
+      <img class="img-responsive" src={{{user.avatar}}}>
+    </div>
+    <div class="col-sm-9">
+      <div class="text-left">
+        <dl class="dl-horizontal">
+          <dt class="hide">Id</dt>
+          <dd id="userId" class="hide">{{user._id}}</dd>
+          <dt>Apodo</dt>
+          <dd>{{user.nickname}}</dd>
+          <dt>Fecha de cumpleaños</dt>
+          <dd><time>{{user.birthdate}}</time></dd>
+          <dt>Edad</dt>
+          <dd id="edad">{{user.birthdate}}</dd>
+          <dt>Se registró el</dt>
+          <dd><time>{{user.signUpDate}}</time></dd>
+          <dt>Rol</dt>
+          <dd>{{user.role.name}}</dd>
+          <dt>Género</dt>
+          <dd>{{user.genre}}</dd>
+        </dl>
+        <div><a id="editButton" class="btn btn-info btn-block" href="/edituser/{{user._id}}"><span class="glyphicon glyphicon-pencil"></span> Editar</a></div>
+        <br />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <h3 class="text-center">Descripción</h3>
+        <div class="col-xs-12">
+          <div class="text-left well">
             {{user.description}}
           </div>
         </div>
-        <div class="col-sm-12">
-          <h2 class="text-center">Eventos a los que asistirá</h2>
-          <hr />
-          <div class="row">
-            <div class="[ col-xs-12 col-sm-12 ]">
-              <ul id="eventHolder" class="event-list">
-              </ul>
-            </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <h3 id="eventsTitle" class="text-center"></h3>
+        <div class="row">
+          <div class="[ col-xs-12 col-sm-12 ]">
+            <ul id="eventHolder" class="event-list">
+            </ul>
           </div>
         </div>
       </div>
@@ -66,40 +64,43 @@ fetch('/api/eventsbyuser/'+userId, {
 })
 .then(res => res.json())
 .then(data => {
+  if (data.userjoined.length != 0){
+    document.getElementById('eventsTitle').innerHTML = "El usuario asitirá a "+data.userjoined.length+" eventos:";
+    data.userjoined.map(joined => {
+      var date = new Date(joined.event.date);
+      var eventLink = document.createElement('li');
+      eventLink.className = "row loading-init loading"
+      eventLink.innerHTML =
+      `<time class="hide">${joined.event.date}</time>
+      <time>
+      <br />
+      <span class="day">${date.getDate()}</span>
+      <span class="month">${meses[date.getMonth()]}</span>
+      <span class="year">${date.getFullYear()}</span>
+      </time>
+      <img alt=${joined.event.name} src=${joined.event.picture} />
+      <div class="info">
+      <h2 class="title"><a href=${"/event/"+joined.event._id}>${joined.event.name}</a></h2>
+      <p class="desc">${joined.event.description}</p>
+      <div class="row">
+      <div class="col-lg-12">
+      <div class="col-lg-6"><small><a href=${"/user/"+joined.event.user.nickname}><span class="glyphicon glyphicon-user"></span>${joined.event.user.displayName}</a></small></div>
+      <div class="col-lg-6"><span class="label label-primary">${joined.event.tag.name}</span></div>
+      </div>
+      </div>
+      </div>`;
 
-  data.userjoined.map(joined => {
-
-    var date = new Date(joined.event.date);
-    var eventLink = document.createElement('li');
-    eventLink.className = "row"
-    eventLink.innerHTML =
-    `<time class="hide">${joined.event.date}</time>
-    <time>
-    <br />
-    <span class="day">${date.getDate()}</span>
-    <span class="month">${meses[date.getMonth()]}</span>
-    <span class="year">${date.getFullYear()}</span>
-    </time>
-    <img alt=${joined.event.name} src=${joined.event.picture} />
-    <div class="info">
-    <h2 class="title"><a href=${"/event/"+joined.event._id}>${joined.event.name}</a></h2>
-    <p class="desc">${joined.event.description}</p>
-    <div class="row">
-    <div class="col-lg-12">
-    <div class="col-lg-6"><small><a href=${"/user/"+joined.event.user.nickname}><span class="glyphicon glyphicon-user"></span>${joined.event.user.displayName}</a></small></div>
-    <div class="col-lg-6"><span class="label label-primary">${joined.event.tag.name}</span></div>
-    </div>
-    </div>
-    </div>`;
-
-    document.getElementById('eventHolder').appendChild(eventLink);
-  })
+      document.getElementById('eventHolder').appendChild(eventLink);
+    })
+  } else {
+    document.getElementById('eventsTitle').innerHTML = "No asitirá a ningún evento.";
+  }
 })
 
 if (window.user != null){
-if (localStorage.getItem('id')!=userId && window.user.role.name != "Administrador"){
-  document.getElementById('editButton').parentNode.className="hide";
-}
+  if (localStorage.getItem('id')!=userId && window.user.role.name != "Administrador"){
+    document.getElementById('editButton').parentNode.className="hide";
+  }
 } else {
   document.getElementById('editButton').parentNode.className="hide";
 }

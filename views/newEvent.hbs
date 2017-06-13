@@ -1,55 +1,58 @@
-<h3> Registrar un nuevo evento </h3>
-<hr />
+<div class="row">
+  <h3> Registrar un nuevo evento </h3>
 
-<form id="createEvent" name="createEvent" method="POST">
-  <div id="errorDiv" class="alert alert-warning hide">
-    <span id="errorMessage"></span>
-  </div>
-  <div class="form-group">
-    <label class="col-md-3 control-label text-right" for="name">Nombre: </label>
-    <div class="col-xs-12 col-md-6 input-group">
-      <input type="name" class="form-control" id="name" name="name" placeholder="Nombre" required>
-    </div>
-  </div>
-  <div class="form-group">
-    <label class="col-md-3 control-label text-right" for="description">Descripción:</label>
-    <div class="col-xs-12 col-md-6 input-group">
-      <textarea class="form-control" rows="5" id="description"></textarea>
-    </div>
-  </div>
-  <div class="form-group">
-    <label class="col-md-3 control-label text-right" for="picture">URL Imagen: </label>
-    <div class="col-xs-12 col-md-6 input-group">
-      <input type="text" class="form-control" id="picture" name="picture" placeholder="http://avatar.com/avatar.jpg" >
-    </div>
-  </div>
-  <div class="form-group hide">
-    <label class="col-md-3 control-label text-right" for="user">ID User: </label>
-    <div class="col-xs-12 col-md-6 input-group">
-      <input type="text" class="form-control" id="user" name="user" placeholder="Usuario" >
-    </div>
-  </div>
+  <div class="col-xs-12">
+    <form id="createEvent" name="createEvent" method="POST">
+      <div id="errorDiv" class="alert alert-warning hide">
+        <span id="errorMessage"></span>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 control-label text-right" for="name">Nombre: </label>
+        <div class="col-xs-12 col-md-6 input-group">
+          <input type="text" class="form-control" id="name" name="name" placeholder="Nombre" minlength="8" maxlength="30" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 control-label text-right" for="description">Descripción:</label>
+        <div class="col-xs-12 col-md-6 input-group">
+          <textarea class="form-control" rows="5" id="description" minlength="50" maxlength="500" required></textarea>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 control-label text-right" for="picture">URL Imagen: </label>
+        <div class="col-xs-12 col-md-6 input-group">
+          <input type="url" class="form-control" id="picture" name="picture" maxlength="100" placeholder="por defecto" >
+        </div>
+      </div>
+      <div class="form-group hide">
+        <label class="col-md-3 control-label text-right" for="user">ID User: </label>
+        <div class="col-xs-12 col-md-6 input-group">
+          <input type="text" class="form-control" id="user" name="user" placeholder="Usuario" >
+        </div>
+      </div>
 
-  <!-- Date input-->
-  <div class="form-group">
-    <label class="col-md-3 control-label text-right" for="date">Fecha del evento: </label>
-    <div class="col-xs-12 col-md-6 input-group date">
-      <input type="text" class="form-control datepicker" id="date" name="date" readonly required><span
-      class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-    </div>
-  </div>
+      <!-- Date input-->
+      <div class="form-group">
+        <label class="col-md-3 control-label text-right" for="date">Fecha del evento: </label>
+        <div class="col-xs-12 col-md-6 input-group date">
+          <input type="text" class="form-control datepicker" id="date" name="date" style="background-color: white;" readonly required><span
+          class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+        </div>
+      </div>
 
-  <div class="form-group">
-    <label class="col-md-3 control-label text-right" for="tag">Clasificar en:</label>
-    <div class="col-xs-12 col-md-6 input-group">
-      <select class="form-control" id="tag" name="tag">
-        <option>Cargando valores...</option>
-      </select>
-    </div>
+      <div class="form-group">
+        <label class="col-md-3 control-label text-right" for="tag">Clasificar en:</label>
+        <div class="col-xs-12 col-md-6 input-group">
+          <select class="form-control" id="tag" name="tag">
+            <option>Cargando valores...</option>
+          </select>
+        </div>
+      </div>
+      <button id="sendButton" type="submit" class="btn btn-default">Registrar nuevo evento</button>
+    </form>
+    <br />
   </div>
-</form>
-<button id="sendButton" class="btn btn-default">Registrar nuevo evento</button>
-<br />
+</div>
 
 <script>
 var selector = document.getElementById('tag')
@@ -86,7 +89,7 @@ if (window.user == null){
 
   const formEvent = document.forms.createEvent;
 
-  botonEnviar.addEventListener('click', event => {
+  document.forms.createEvent.addEventListener('submit', event => {
     event.preventDefault();
     var formData = new FormData();
 
@@ -110,8 +113,16 @@ if (window.user == null){
 
         window.location = "/event/"+data.event._id;
       } else {
-        avisoDiv.className = "alert alert-warning";
-        aviso.innerHTML = data.message;
+        avisoDiv.className = "alert alert-warning text-left";
+        if (Array.isArray(data.message)){
+          aviso.innerHTML ="<h4>Errores</h4><ul>";
+          for (var i=0; i<data.message.length; i++){
+            aviso.innerHTML +="<li>"+data.message[i]+"</li>";
+          }
+          aviso.innerHTML +="</ul>";
+        } else {
+          aviso.innerHTML = data.message;
+        }
       }
     })
   })

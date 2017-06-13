@@ -27,7 +27,7 @@ function saveTag (req, res){
   tag.name = req.body.name
 
   tag.save((err, tagStored) => {
-    if (err) res.status(500).send({message: `Error al salvar en la base de datos: ${err}`})
+    if (err) return res.status(500).send({message: `Error al salvar en la base de datos: ${err}`})
 
     res.status(200).send({tag: tagStored})
   })
@@ -38,7 +38,7 @@ function updateTag (req, res){
   let update = req.body
 
   Tag.findByIdAndUpdate(tagId, update, (err, tagUpdated) => {
-    if (err) res.status(500).send({message: `Error al actualizar en la base de datos: ${err}`})
+    if (err) return res.status(500).send({message: `Error al actualizar en la base de datos: ${err}`})
 
     res.status(200).send({tag: tagUpdated})
   })
@@ -48,10 +48,10 @@ function deleteTag (req, res){
   let  tagId = req.params.tagId
 
   Tag.findById(tagId, (err, tag) => {
-    if (err) res.status(500).send({message: `Error al borrar en la base de datos: ${err}`})
+    if (err) return res.status(500).send({message: `Error al borrar en la base de datos: ${err}`})
 
     tag.remove(err => {
-      if (err) res.status(500).send({message: `Error al borrar en la base de datos: ${err}`})
+      if (err) return res.status(500).send({message: `Error al borrar en la base de datos: ${err}`})
       res.status(200).send({message: 'La etiqueta ha sido eliminada'})
     })
   })

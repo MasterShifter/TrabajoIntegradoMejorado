@@ -1,71 +1,87 @@
-<h3>Editar usuario {{user.nickname}}</h3>
-<hr />
+<div class="row">
+  <h3>Editar usuario {{user.nickname}}</h3>
+  <div class="col-xs-12">
+    <div id="errorDiv" class="alert alert-warning hide">
+      <span id="errorMessage"></span>
+    </div>
+    <br />
+    <form id="edit" name="edit" method="POST">
+      <div class="form-group hide">
+        <label class="col-md-3 control-label text-right" for="_id">ID: </label>
+        <div class="col-xs-12 col-md-6 input-group">
+          <input type="text" class="form-control" id="_id" name="_id" value="{{user._id}}" readonly required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 control-label text-right" for="nickname">Nickname: </label>
+        <div class="col-xs-12 col-md-6 input-group">
+          <input type="text" class="form-control" id="nickname" name="nickname" value="{{user.nickname}}" oninput="checkNickname();" maxlength="20" required>
+          <div class="col-xs-12 text-left">
+            <div class="text-info">
+              <span id="nickErI" class=''></span> <span id="nickErT"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 control-label text-right" for="displayName">Nombre: </label>
+        <div class="col-xs-12 col-md-6 input-group">
+          <input type="text" class="form-control" id="displayName" name="displayName" placeholder="Nombre" value="{{user.displayName}}" minlength="1" maxlength="45" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 control-label text-right" for="email">Correo electrónico: </label>
+        <div class="col-xs-12 col-md-6 input-group">
+          <input type="email" class="form-control" id="email" name="email" value="{{user.email}}" oninput="checkEmail();" maxlength="50" required>
+          <div class="col-xs-12 text-left">
+            <div class="text-info">
+              <span id="emaErI" class=''></span> <span id="emaErT"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-3 control-label text-right" for="avatar">Avatar: </label>
+        <div class="col-xs-12 col-md-6 input-group">
+          <input type="url" class="form-control" id="avatar" name="avatar" placeholder="URL Avatar" value="{{user.avatar}}" maxlength="100" required>
+        </div>
+      </div>
+      <!-- Date input-->
+      <div class="form-group">
+        <label class="col-md-3 control-label text-right" for="birthdate">Fecha de nacimiento: </label>
+        <div class="col-xs-12 col-md-6 input-group date">
+          <input type="text" class="form-control datepicker" id="birthdate" name="birthdate" style="background-color: white;" value="{{user.birthdate}}" maxlength="10" readonly required><span
+          class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+        </div>
+      </div>
 
-<form id="edit" name="edit" method="POST">
-  <div id="errorDiv" class="alert alert-warning hide">
-    <span id="errorMessage"></span>
-  </div>
-  <div class="form-group hide">
-    <label class="col-md-3 control-label text-right" for="_id">ID: </label>
-    <div class="col-xs-12 col-md-6 input-group">
-      <input type="nickname" class="form-control" id="_id" name="_id" value="{{user._id}}" readonly required>
-    </div>
-  </div>
-  <div class="form-group">
-    <label class="col-md-3 control-label text-right" for="nickname">Nickname: (no se puede editar)</label>
-    <div class="col-xs-12 col-md-6 input-group">
-      <input type="nickname" class="form-control" id="nickname" name="nickname" value="{{user.nickname}}" readonly required>
-    </div>
-  </div>
-  <div class="form-group">
-    <label class="col-md-3 control-label text-right" for="displayName">Nombre: </label>
-    <div class="col-xs-12 col-md-6 input-group">
-      <input type="displayName" class="form-control" id="displayName" name="displayName" placeholder="Nombre" value="{{user.displayName}}" required>
-    </div>
-  </div>
-  <div class="form-group">
-    <label class="col-md-3 control-label text-right" for="email">Correo electrónico: (no se puede editar)</label>
-    <div class="col-xs-12 col-md-6 input-group">
-      <input type="email" class="form-control" id="email" name="email" value="{{user.email}}" readonly required>
-    </div>
-  </div>
-  <div class="form-group">
-    <label class="col-md-3 control-label text-right" for="avatar">Avatar: </label>
-    <div class="col-xs-12 col-md-6 input-group">
-      <input type="text" class="form-control" id="avatar" name="avatar" placeholder="URL Avatar" value="{{user.avatar}}" required>
-    </div>
-  </div>
-  <!-- Date input-->
-  <div class="form-group">
-    <label class="col-md-3 control-label text-right" for="birthdate">Fecha de nacimiento: </label>
-    <div class="col-xs-12 col-md-6 input-group date">
-      <input type="text" class="form-control datepicker" id="birthdate" name="birthdate" value="{{user.birthdate}}" readonly required><span
-      class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-    </div>
-  </div>
+      <div class="form-group">
+        <label class="col-md-3 control-label text-right" for="genre">Género:</label>
+        <div class="col-xs-12 col-md-6 input-group">
+          <select class="form-control" id="genre" name="genre">
+            <option value="No especificado">No especificado</option>
+            <option value="Hombre">Hombre</option>
+            <option value="Mujer">Mujer</option>
+          </select>
+        </div>
+        <span id="genreHolder" class="hide">{{user.genre}}</span>
+      </div>
 
-  <div class="form-group">
-    <label class="col-md-3 control-label text-right" for="genre">Género:</label>
-    <div class="col-xs-12 col-md-6 input-group">
-      <select class="form-control" id="genre" name="genre">
-        <option value="No especificado">No especificado</option>
-        <option value="Hombre">Hombre</option>
-        <option value="Mujer">Mujer</option>
-      </select>
-    </div>
-    <span id="genreHolder" class="hide">{{user.genre}}</span>
+      <div class="form-group">
+        <label class="col-md-3 control-label text-right" for="description">Descripción:</label>
+        <div class="col-xs-12 col-md-6 input-group">
+          <textarea class="form-control" rows="5" id="description" maxlength="500">{{user.description}}</textarea>
+          <div class="row text-left">
+            <span id="commentInfo" class="col-xs-6">Límite <span id="commentLimit">0</span>/500 carácteres</span>
+          </div>
+        </div>
+      </div>
+    </form>
+    <button id="sendButton" class="btn btn-info">Editar usuario</button> <a id="cancelButton" class="btn btn-default">Cancelar</a>
+    <br />
+    <br />
   </div>
-
-  <div class="form-group">
-    <label class="col-md-3 control-label text-right" for="description">Descripción:</label>
-    <div class="col-xs-12 col-md-6 input-group">
-      <textarea class="form-control" rows="5" id="description">{{user.description}}</textarea>
-    </div>
-  </div>
-</form>
-<button id="sendButton" class="btn btn-default">Editar usuario</button>
-
-<br />
+</div>
 
 <script>
 if (window.user != null){
@@ -77,6 +93,24 @@ if (window.user != null){
 
   document.forms.edit.birthdate.value = new Date(document.forms.edit.birthdate.value).toISOString().substr(0, 10);
   document.forms.edit.genre.value = document.getElementById('genreHolder').innerHTML;
+
+
+  var textarea = document.getElementById('description');
+  textarea.addEventListener('input', updateDescriptionLimit);
+  updateDescriptionLimit();
+
+  function updateDescriptionLimit(){
+    var info = document.getElementById('commentLimit');
+    var commentInfo = document.getElementById('commentInfo');
+
+    info.innerHTML = textarea.value.length;
+
+    if (info.innerHTML == textarea.maxLength){
+      commentInfo.className = "col-xs-6 red";
+    } else {
+      commentInfo.className = "col-xs-6";
+    }
+  }
   </script>
 
   <script type="text/javascript">
@@ -100,12 +134,13 @@ if (window.user != null){
       event.preventDefault();
       var formData = new FormData();
 
+      formData.append("nickname", formEdit.nickname.value);
       formData.append("displayName", formEdit.displayName.value);
+      formData.append("email", formEdit.email.value);
       formData.append("avatar", formEdit.avatar.value);
       formData.append("birthdate", formEdit.birthdate.value);
       formData.append("genre", formEdit.genre.value);
       formData.append("description", formEdit.description.value);
-      formData.append("email", formEdit.email.value);
 
       var request = new Request('/api/user/edit/'+document.forms.edit._id.value, {
         method: 'PUT',
@@ -121,20 +156,114 @@ if (window.user != null){
           aviso.innerHTML = "¡usuario actualizado!";
 
           if (window.user._id == formEdit._id.value)
+          window.user.nickname = formEdit.nickname.value;
           window.user.displayName = formEdit.displayName.value;
+          window.user.email = formEdit.email.value;
           window.user.avatar = formEdit.avatar.value;
           window.user.birthdate = formEdit.birthdate.value;
           window.user.genre = formEdit.genre.value;
           window.user.description = formEdit.description.value;
-          window.user.email = formEdit.email.value;
           localStorage.setItem('user', JSON.stringify(window.user));
 
           window.location = "/user/"+formEdit.nickname.value;
         } else {
-          avisoDiv.className = "alert alert-warning";
-          aviso.innerHTML = data.message;
+          avisoDiv.className = "alert alert-warning text-left";
+          if (Array.isArray(data.message)){
+            aviso.innerHTML ="<h4>Errores</h4><ul>";
+            for (var i=0; i<data.message.length; i++){
+              aviso.innerHTML +="<li>"+data.message[i]+"</li>";
+            }
+            aviso.innerHTML +="</ul>";
+          } else {
+            aviso.innerHTML = data.message;
+          }
         }
       })
     })
+  }
+  </script>
+
+
+  <script>
+  var oldNick = document.forms.edit.nickname.value;
+  var oldEmail = document.forms.edit.email.value;
+
+  function checkNickname(){
+    var spanImage = document.getElementById('nickErI');
+    var spanText = document.getElementById('nickErT');
+    spanImage.parentNode.className = 'text-info';
+    spanImage.className = 'fa fa-circle-o-notch fa-spin';
+    spanText.innerHTML = 'Comprobando';
+
+    if (document.forms.edit.nickname.value.length == 0){
+      spanImage.parentNode.className = 'text-danger';
+      spanImage.className = 'glyphicon glyphicon-remove';
+      spanText.innerHTML = 'No puede estar vacio';
+    } else if (document.forms.edit.nickname.value == oldNick){
+      spanImage.parentNode.className = 'text-success';
+      spanImage.className = 'glyphicon glyphicon-ok';
+      spanText.innerHTML = 'Sin modificar';
+    } else {
+
+      fetch('/api/user/nick/'+document.forms.edit.nickname.value, {
+        method: 'GET'
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.message == "Yes"){
+          spanImage.parentNode.className = 'text-danger';
+          spanImage.className = 'glyphicon glyphicon-remove';
+          spanText.innerHTML = 'Está en uso';
+        } else if (data.message == "No"){
+          spanImage.parentNode.className = 'text-success';
+          spanImage.className = 'glyphicon glyphicon-ok';
+          spanText.innerHTML = 'Está disponible';
+        } else {
+          spanImage.parentNode.className = 'text-danger';
+          spanImage.className = 'glyphicon glyphicon-remove';
+          spanText.innerHTML = 'Especifica un nick';
+        }
+      })
+    }
+  }
+
+
+  function checkEmail(){
+    var spanImage = document.getElementById('emaErI');
+    var spanText = document.getElementById('emaErT');
+    spanImage.parentNode.className = 'text-info';
+    spanImage.className = 'fa fa-circle-o-notch fa-spin';
+    spanText.innerHTML = 'Comprobando';
+
+    if (document.forms.edit.email.value.length == 0){
+      spanImage.parentNode.className = 'text-danger';
+      spanImage.className = 'glyphicon glyphicon-remove';
+      spanText.innerHTML = 'No puede estar vacio';
+    } else if (document.forms.edit.email.value == oldEmail){
+      spanImage.parentNode.className = 'text-success';
+      spanImage.className = 'glyphicon glyphicon-ok';
+      spanText.innerHTML = 'Sin modificar';
+    } else {
+
+      fetch('/api/user/email/'+document.forms.edit.email.value, {
+        method: 'GET'
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.message == "Yes"){
+          spanImage.parentNode.className = 'text-danger';
+          spanImage.className = 'glyphicon glyphicon-remove';
+          spanText.innerHTML = 'Está en uso';
+        } else if (data.message == "No"){
+          spanImage.parentNode.className = 'text-success';
+          spanImage.className = 'glyphicon glyphicon-ok';
+          spanText.innerHTML = 'Está disponible';
+        } else {
+          spanImage.parentNode.className = 'text-danger';
+          spanImage.className = 'glyphicon glyphicon-remove';
+          spanText.innerHTML = 'Especifica un email';
+        }
+      })
+    }
   }
   </script>

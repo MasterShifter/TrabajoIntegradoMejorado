@@ -1,145 +1,222 @@
-<h3 class="col-md-offset-1 text-left">Información de la quedada: </h3>
-<hr />
-
-<section id="eventHolder" class="comment-list">
-  <small id="eventId" class="hide">{{event._id}}</small>
-  <article class="row">
-    <div class="col-md-2 col-sm-2 hidden-xs">
-      <figure class="thumbnail">
-        <img class="img-responsive" src="{{event.picture}}" />
-      </figure>
-    </div>
-    <div class="col-md-10 col-sm-10">
-      <div class="panel panel-default arrow left">
-        <div class="panel-body">
-          <div class="panel-heading right"><div class="comment-date"><span class="glyphicon glyphicon-calendar"></span><time>{{event.date}}</time></div></div>
-          <div class="align-right"><a id="editButton" href="/editevent/{{event._id}}" class="btn btn-default">Editar</a><a id="deleteButton" href="/deleteevent/{{event._id}}" class="btn btn-danger">Eliminar</a></div>
-          <header class="text-left">
-            <div class="comment-user"><h3>{{event.name}}</h3></div>
-            <small><b>Autor:</b> <a id="autor" class="nickname" href="/user/{{event.user.nickname}}">{{event.user.nickname}}</a>. <b>Evento creado en:</b> <time>{{event.dateCreated}}</time></small>
-          </header>
-          <div class="comment-post">
-            <p class="text-left">
-              {{event.description}}
-            </p>
-          </div>
-        </div>
-        <hr />
-        <button id="joinButton" class="btn btn-info btn-lg btn-block">Unirse</button>
-        <hr />
-        <div class="panel-body text-center">
-          <h4 id="apuntados">Apuntados</h4>
-          <ul id="userList">
-
-          </ul>
-        </div>
-      </div>
-    </div>
-  </article>
-</section>
-
-<h2 class="col-md-offset-1 text-left">Comentarios: </h2>
-<hr />
-
-<section id="commentsHolder" class="comment-list">
-
-  {{#each event.eventmessage}}
-  <article class="row">
-    <div class="col-md-1 col-sm-1 col-md-offset-1 col-sm-offset-0 hidden-xs">
-      <figure class="thumbnail">
-        <img class="img-responsive" src="{{user.avatar}}" />
-      </figure>
-    </div>
-    <div class="col-md-10 col-sm-10">
-      <div class="panel panel-default arrow left">
-        <div class="panel-heading right"><div class="comment-date"><span class="glyphicon glyphicon-calendar"></span><time class="large">{{dateCreated}}</time></div></div>
-        <div class="panel-body">
-          <header class="text-left">
-            <div class="comment-user"><small><a class="nickname" href="/user/{{user.nickname}}"></span>{{user.nickname}}</a></small></div>
-          </header>
-          <div class="comment-post">
-            <p class="text-left">
-              {{content}}
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </article>
-  {{/each}}
-</section>
-
-
-<section id="newComment">
-  <h2 class="col-md-offset-1 text-left">Responder: </h2>
+<div class="row">
+  <h3 class="col-xs-12 text-left">Información de la quedada: </h3>
   <hr />
-  <div class="row">
-    <div class="col-md-12">
-      <div class="widget-area no-padding blank">
+
+  <section id="eventHolder" class="comment-list">
+    <small id="eventId" class="hide">{{event._id}}</small>
+    <small id="creator" class="hide">{{event.user.nickname}}</small>
+    <article class="row">
+      <div class="col-md-2 col-sm-2 hidden-xs">
+        <figure class="thumbnail">
+          <img class="img-responsive" src="{{event.picture}}" />
+        </figure>
+      </div>
+      <div class="col-xs-12 col-sm-10">
+        <div class="panel panel-default arrow left">
+          <div class="panel-body">
+            <div class="panel-heading right"><div class="comment-date"><span class="glyphicon glyphicon-calendar"></span><time>{{event.date}}</time></div></div>
+            <div id="eventButtons" class="pull-right op-buttons"><a id="editButton" href="/editevent/{{event._id}}" class="btn btn-default" data-toggle="tooltip" title="Editar"><span class="glyphicon glyphicon-edit"></span></a><a id="deleteButton" href="/deleteevent/{{event._id}}" class="btn btn-danger" data-toggle="tooltip" title="Eliminar"><span class="glyphicon glyphicon-trash" ></span></a></div>
+            <header class="text-left">
+              <p class="comment-user lead">{{event.name}}</p>
+              <small><b>Autor:</b> <a id="autor" class="nickname" href="/user/{{event.user.nickname}}">{{event.user.displayName}}</a>. <b>Evento creado en:</b> <time>{{event.dateCreated}}</time></small>
+            </header>
+            <div class="comment-post">
+              <p class="text-left">
+                {{event.description}}
+              </p>
+            </div>
+          </div>
+          <div class="hide"><hr /><button id="joinButton" class="btn btn-info btn-lg btn-block">Unirse</button></div>
+        </div>
+      </div>
+    </article>
+  </section>
+</div>
+
+<div class="row">
+  <h3 id="apuntados" class="col-xs-12 text-left">Apuntados <span id="joinedCount"></span> usuarios:</h3>
+  <div class="col-xs-12">
+    <ul id="userList">
+    </ul>
+  </div>
+</div>
+
+<div class="row">
+  <h3 class="col-xs-12 text-left">Comentarios: </h3>
+  <hr />
+
+  <section id="commentsHolder" class="comment-list">
+
+    {{#each event.eventmessage}}
+    <article class="row loading-init loading">
+      <small class="author hide">{{user.nickname}}</small>
+      <div class="col-md-1 col-sm-1 col-md-offset-1 col-sm-offset-0 hidden-xs">
+        <figure class="thumbnail">
+          <img class="img-responsive" src="{{user.avatar}}" />
+        </figure>
+      </div>
+      <div class="col-xs-12 col-sm-10">
+        <div class="panel panel-default arrow left">
+          <div class="panel-heading right"><div class="comment-date"><span class="glyphicon glyphicon-calendar"></span><time class="large">{{dateCreated}}</time></div></div>
+          <div class="pull-right op-buttons-mini"><a href="/api/eventmessages/{{_id}}" class="btn btn-danger delComment" data-toggle="tooltip" title="Eliminar"><span class="glyphicon glyphicon-trash"></span></a></div>
+          <div class="panel-body">
+            <header class="text-left">
+              <div class="comment-user"><small><a class="nickname" href="/user/{{user.nickname}}">{{user.displayName}}</a></small></div>
+            </header>
+            <div class="comment-post">
+              <p class="text-left">
+                {{content}}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+    {{/each}}
+  </section>
+</div>
+
+<div class="row">
+  <section id="newComment">
+    <h3 class="text-left">Responder: </h3>
+    <div class="col-xs-12">
+      <div class="widget-area no-padding no-margin blank">
         <div class="status-upload">
           <form id="formComment" name="formComment">
-            <textarea id="content" name="content" placeholder="Escribe aquí tu respuesta al evento" ></textarea>
+            <textarea id="content" name="content" placeholder="Escribe aquí tu respuesta al evento" maxlength="200"></textarea>
           </form>
-          <button id="commentSend" class="btn btn-success btn-lg btn-block green">Comentar</button>
+          <span id="commentInfo" class="col-xs-6">Límite <span id="commentLimit">0</span>/200 carácteres</span>
+          <button id="commentSend" form="newComment" type="submit" class="btn btn-success btn-lg green col-xs-6" disabled="disabled">Comentar</button>
         </div><!-- Status Upload  -->
       </div><!-- Widget Area -->
     </div>
-  </div>
-</section>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+  </section>
+</div>
 
+
+<script>
+var deleteComments = document.getElementsByClassName('delComment');
+
+for (var i=0; i<deleteComments.length; i++){
+  deleteComments[i].onclick = deleteComment;
+  if (window.user == null){ deleteComments[i].className = "delComment hide"; }
+}
+
+if (window.user != null){
+  //User event creator
+  var creator = document.getElementById('creator').innerHTML;
+  var commentsHolder = document.getElementById('commentsHolder');
+  var comments = commentsHolder.getElementsByTagName('article');
+
+  for (var i=0; i<comments.length; i++){
+    var commentAuthor = comments[i].getElementsByClassName('author')[0].innerHTML;
+    var delButton = comments[i].getElementsByClassName('delComment')[0];
+
+    if (window.user.nickname != commentAuthor && window.user.nickname != creator && window.user.role.name != "Administrador"){
+      delButton.onclick = deleteComment;
+      delButton.className = "hide";
+    }
+  }
+
+
+
+  if (creator != window.user.nickname && window.user.role.name != "Administrador"){
+    document.getElementById('eventButtons').className = "hide";
+  }
+} else {
+  document.getElementById('eventButtons').className = "hide";
+}
+
+function deleteComment(event){
+  event.preventDefault();
+  const myHeaders = new Headers();
+  myHeaders.append('authorization', `Bearer ${localStorage.token}`);
+
+  fetch(this.href, {
+    method: 'DELETE',
+    headers: myHeaders
+  })
+  .then(res => res.json())
+  .then(data => {
+    var aviso = document.getElementById('errorMessage');
+    var avisoDiv = document.getElementById('errorDiv');
+    if (data.message != null){
+      alert(data.message);
+    } else {
+      location.reload();
+    }
+  })
+}
+</script>
 
 
 <script>
 var joinButton = document.getElementById('joinButton');
 
-if (window.user != null){
-  var eventId = document.getElementById('eventId').innerHTML;
-  var apuntado = false;
+var eventId = document.getElementById('eventId').innerHTML;
+var apuntado = false;
 
-  fetch('/api/usersbyevent/'+eventId, {
-    method: 'GET'
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.userjoined.length != 0){
-      data.userjoined.map(joined => {
+fetch('/api/usersbyevent/'+eventId, {
+  method: 'GET'
+})
+.then(res => res.json())
+.then(data => {
+  if (data.userjoined.length != 0){
+    data.userjoined.map(joined => {
+      if (window.user != null){
         if (joined.user.nickname == window.user.nickname){
           apuntado=true;
         }
-        var userLink = document.createElement('li');
-        userLink.innerHTML =
-        `<div class="col-xs-2">
-        <a class="nickname" href=${"/user/"+joined.user.nickname}>
-        <figure>
-        <img class="img-circle img-responsive avatar" src=${joined.user.avatar} />
-        <figcaption><small>${joined.user.nickname}</small></figcaption>
-        </figure>
-        </a>
-        </div>`;
+      }
+      var userLink = document.createElement('li');
+      userLink.innerHTML =
+      `<div class="col-xs-2 loading-init loading">
+      <a class="nickname" href=${"/user/"+joined.user.nickname}>
+      <figure>
+      <img class="img-circle img-responsive avatar" src=${joined.user.avatar} />
+      <figcaption><small>${joined.user.displayName}</small></figcaption>
+      </figure>
+      </a>
+      </div>`;
 
-        document.getElementById('userList').appendChild(userLink);
-      })
+      document.getElementById('userList').appendChild(userLink);
+    })
 
-    } else {
-      document.getElementById('apuntados').innerHTML = "No hay apuntados";
-    }
+    document.getElementById('joinedCount').innerHTML = data.userjoined.length;
+  } else {
+    document.getElementById('apuntados').innerHTML = "No hay apuntados";
+  }
+
+  if (window.user != null){
+    joinButton.parentNode.className = "";
+
     const myHeaders = new Headers();
     myHeaders.append('authorization', `Bearer ${localStorage.token}`);
     var formJoin = new FormData();
 
-    var url= "/api/userjoined/new";
+    var mode= "POST";
     if (apuntado){
       joinButton.className="btn btn-danger btn-lg btn-block";
       joinButton.innerHTML="Salirse";
-      url= "/api/userjoined/delete";
+      mode= "DELETE";
     }
     joinButton.addEventListener('click', function(){
 
       formJoin.append("user", localStorage.getItem('id'));
       formJoin.append("event", eventId);
 
-      fetch(url, {
-        method: 'POST',
+      fetch('/api/userjoined/', {
+        method: mode,
         headers: myHeaders,
         body: formJoin
       })
@@ -152,65 +229,77 @@ if (window.user != null){
         } else {
           location.reload();
         }
-      })
+      });
     });
-  })
-
-}
+  }
+});
 </script>
 
 
 <script type="text/javascript">
 replaceAllDateFormats();
+
 if (window.user == null){
-  document.getElementById('newComment').innerHTML = "<span class='alert alert-info'>Debes estar logueado para comentar</span>";
-}
+  document.getElementById('newComment').innerHTML = "<span class='alert alert-info col-xs-12'>Debes estar logueado para comentar</span>";
+} else {
 
-window.addEventListener('load', function(){
+  var commentSend = document.getElementById('commentSend');
 
-  const myHeaders = new Headers();
-  myHeaders.append('authorization', `Bearer ${localStorage.token}`);
+  window.addEventListener('load', function(){
 
-  const formComment = document.forms.formComment;
+    const myHeaders = new Headers();
+    myHeaders.append('authorization', `Bearer ${localStorage.token}`);
 
-  document.getElementById('commentSend').addEventListener('click', event => {
-    event.preventDefault();
+    const formComment = document.forms.formComment;
 
-    var formData = new FormData();
-    var eventId = document.getElementById("eventId").innerHTML;
+    commentSend.addEventListener('click', event => {
+      event.preventDefault();
 
-    formData.append("content", formComment.content.value);
-    formData.append("user", localStorage.getItem('id'));
-    formData.append("event", eventId);
+      var formData = new FormData();
+      var eventId = document.getElementById("eventId").innerHTML;
 
-    fetch('/api/eventmessages', {
-      method: 'POST',
-      headers: myHeaders,
-      body: formData
-    })
-    .then(res => res.json())
-    .then(data => {
-      var aviso = document.getElementById('errorMessage');
-      var avisoDiv = document.getElementById('errorDiv');
-      if (data.message != null){
-        alert(data.message);
-      } else {
-        location.reload();
-      }
+      formData.append("content", formComment.content.value);
+      formData.append("user", localStorage.getItem('id'));
+      formData.append("event", eventId);
+
+      fetch('/api/eventmessages', {
+        method: 'POST',
+        headers: myHeaders,
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        var aviso = document.getElementById('errorMessage');
+        var avisoDiv = document.getElementById('errorDiv');
+        if (data.message != null){
+          alert(data.message);
+        } else {
+          location.reload();
+        }
+      })
     })
   })
-})
 
-var eventUser = document.getElementById('autor').innerHTML;
+  var eventUser = document.getElementById('autor').innerHTML;
 
-if (window.user != null){
-if (window.user.nickname != eventUser && window.user.role.name != "Administrador"){
-  document.getElementById('editButton').parentNode.className="hide";
-  console.log('NO PUEDES EDITAR')
+  var textarea = document.getElementById('content');
+  textarea.addEventListener('input', function(){
+    var info = document.getElementById('commentLimit');
+    var commentInfo = document.getElementById('commentInfo');
 
-}
-} else {
-  document.getElementById('editButton').parentNode.className="hide";
-  console.log('NO PUEDES EDITAR')
+    info.innerHTML = content.value.length;
+
+    if (info.innerHTML == textarea.maxLength){
+      commentInfo.className = "col-xs-6 red";
+    } else {
+      commentInfo.className = "col-xs-6";
+    }
+
+    if (textarea.value.length == 0){
+      commentSend.disabled = "disabled";
+    } else {
+      commentSend.disabled = "";
+    }
+  });
 }
 </script>

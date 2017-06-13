@@ -1,4 +1,5 @@
-
+<div class="row">
+  <h3 class="no-margin">Noticias</h3>
   <div id="myCarousel" class="carousel slide anuncio-principal" data-ride="carousel">
     <!-- Indicators -->
     <ol class="carousel-indicators">
@@ -32,76 +33,67 @@
       <span class="sr-only">Next</span>
     </a>
   </div>
+</div>
 
-  <hr>
-
-  <h3>Últimas quedadas</h3>
+<div class="row">
+  <h3>5 Quedadas próximas que quizás te interesen:</h3>
 
   <div class="row">
     <div class="[ col-xs-12 col-sm-12 ]">
       <ul id="eventHolder" class="event-list">
 
-  {{#each events}}
-        <li>
-        <time class="hide">{{date}}</time>
-        <time>
-        <br />
-        <span class="day"></span>
-        <span class="month"></span>
-        <span class="year"></span>
-        </time>
-        <img alt="{{name}}" src="{{picture}}" />
-        <div class="info">
-        <h2 class="title"><a href="/event/{{_id}}">{{name}}</a></h2>
-        <p class="desc">{{description}}</p>
-        <div class="row">
-          <div class="col-xs-12">
-        <div class="col-xs-6"><small><a class="nickname" href="user/{{user.nickname}}"><span class="glyphicon glyphicon-user"></span>{{user.displayName}}</a></small></div>
-        <div class="col-xs-6"><span class="label label-primary">{{tag.name}}</span></div>
-      </div>
-      </div>
-        </div>
+        {{#each events}}
+        <li class="loading-init loading">
+          <time class="hide">{{date}}</time>
+          <time>
+            <br />
+            <span class="day"></span>
+            <span class="month"></span>
+            <span class="year"></span>
+          </time>
+          <img alt="{{name}}" src="{{picture}}" />
+          <div class="info">
+            <h2 class="title"><a href="/event/{{_id}}">{{name}}</a></h2>
+            <p class="desc">{{description}}</p>
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="col-xs-6"><small><a class="nickname" href="user/{{user.nickname}}"><span class="glyphicon glyphicon-user"></span>{{user.displayName}}</a></small></div>
+                <div class="col-xs-6"><span class="label label-primary">{{tag.name}}</span></div>
+              </div>
+            </div>
+          </div>
         </li>
-      {{/each}}
+        {{/each}}
 
       </ul>
     </div>
   </div>
-  <hr>
+</div>
 
-  <h3>Welcome</h3>
-  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-    minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-    aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non
-    proident, sunt in culpa qui officia deserunt mollit anim id est
-    laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt
-    ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-    nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-    consequat.</p>
-    <hr>
-    <h3>Test</h3>
-    <p>Lorem ipsum...</p>
+<div class="row">
+  <h3>Bienvenido</h3>
+  <div class="col-xs-12">
+    <p class="text-justify">En Planizator puedes crear un usuario y acceder instantaneamente a un rango de quedadas que puedes filtrar por tipo y por fecha, las quedadas son gratuitas
+      y hechas por otros usuarios, ya no tienes que volver a estar solo, ¡ahora puedes encontrar gente con la que compartir aficiones! Si no tienes un usuario
+      <a href="/register">regístrate</a>, si ya tienes un usuario <a href="/login">inicia sesión</a>. Si quieres ver todas las quedadas disponibles entra
+      <a href="/events">aquí</a> y si no encuentras ninguna, crea una <a href="/newEvent">aquí</a>.
+    </p>
+  </div>
+</div>
 
 
+<script type="text/javascript">
 
+var eventos = document.getElementById('eventHolder').getElementsByTagName('li');
+var meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
+for (var i=0; i<eventos.length; i++){
+  var fecha = new Date(eventos[i].getElementsByTagName('time')[0].innerHTML);
 
+  var spans = eventos[i].getElementsByTagName('span');
+  spans[0].innerHTML = fecha.getDate();
+  spans[1].innerHTML = meses[fecha.getMonth()];
+  spans[2].innerHTML = fecha.getFullYear();
+}
 
-
-
-  <script type="text/javascript">
-
-  var eventos = document.getElementById('eventHolder').getElementsByTagName('li');
-  var meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-
-  for (var i=0; i<eventos.length; i++){
-    var fecha = new Date(eventos[i].getElementsByTagName('time')[0].innerHTML);
-
-    var spans = eventos[i].getElementsByTagName('span');
-    spans[0].innerHTML = fecha.getDate();
-    spans[1].innerHTML = meses[fecha.getMonth()];
-    spans[2].innerHTML = fecha.getFullYear();
-  }
-
-  </script>
+</script>

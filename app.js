@@ -32,6 +32,11 @@ app.use('/api', api)
 //Home
 app.get('/', eventCtrl.showHome)
 
+//About
+app.get('/about', (req, res) => {
+  res.render('about')
+})
+
 //Login screen
 app.get('/login', upload.fields([]), (req, res) => {
   res.render('login')

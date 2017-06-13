@@ -5,7 +5,7 @@ const Schema = mongoose.Schema
 
 const EventSchema = Schema({
   name: String, default: "",
-  picture: String, default: "",
+  picture: String, default: "/public/img/blank-picture.png",
   date: { type: Date, default: Date.now() },
   dateCreated: { type: Date, default: Date.now() },
   tag: { type: Schema.Types.ObjectId, ref: 'Tag' },
