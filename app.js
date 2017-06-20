@@ -10,8 +10,8 @@ const eventCtrl = require('./controllers/event')
 const auth = require('./middlewares/auth')
 var path = require('path')
 
-let multer = require('multer');
-let upload = multer();
+let multer = require('multer')
+let upload = multer()
 
 app.use(bodyParser.urlencoded({
     extended: true
@@ -24,8 +24,6 @@ app.engine('.hbs', hbs({
   extname: '.hbs'
 }))
 app.set('view engine', '.hbs')
-
-
 
 app.use('/api', api)
 
@@ -77,5 +75,6 @@ app.get('/user/:userNick', userCtrl.profileByNick)
 
 //Edit profile
 app.get('/edituser/:userId', userCtrl.editScreen)
+
 
 module.exports = app

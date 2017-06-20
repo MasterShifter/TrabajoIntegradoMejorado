@@ -156,10 +156,6 @@ function canEditTheComment (req, res, next) {
               if (err) return res.status(500).send({message: `Error al realizar la peticion: ${err}`})
               if (!userComment) return res.status(404).send({message: `El usuario del comentario no existe`})
 
-              console.log("rol del emisor: "+user.role.name)
-              console.log("usuario del comentario: "+userComment._id)
-              console.log("usuario del evento: "+event.user)
-
               if (user.role.name == "Administrador" || user._id.equals(event.user) || user._id.equals(userComment._id)){
                 next()
               } else {

@@ -15,10 +15,11 @@
       <div class="form-group">
         <label class="col-md-3 control-label text-right" for="nickname">Nickname: </label>
         <div class="col-xs-12 col-md-6 input-group">
-          <input type="text" class="form-control" id="nickname" name="nickname" value="{{user.nickname}}" oninput="checkNickname();" maxlength="20" required>
+          <input type="text" class="form-control" id="nickname" name="nickname" value="{{user.nickname}}" oninput="checkNickname();" maxlength="20" pattern="([A-Za-z0-9_])\w+" required>
           <div class="col-xs-12 text-left">
             <div class="text-info">
               <span id="nickErI" class=''></span> <span id="nickErT"></span>
+              <p class="text-muted">Solo carácteres alfanuméricos y '_'.</p>
             </div>
           </div>
         </div>
@@ -26,13 +27,18 @@
       <div class="form-group">
         <label class="col-md-3 control-label text-right" for="displayName">Nombre: </label>
         <div class="col-xs-12 col-md-6 input-group">
-          <input type="text" class="form-control" id="displayName" name="displayName" placeholder="Nombre" value="{{user.displayName}}" minlength="1" maxlength="45" required>
+          <input type="text" class="form-control" id="displayName" name="displayName" placeholder="Nombre" value="{{user.displayName}}" pattern="([a-zA-Záéíóúñm,-]+[ ]*)+" minlength="1" maxlength="45" required>
+          <div class="col-xs-12 text-left">
+            <div class="text-info">
+              <p class="text-muted">Solo se admiten letras, tildes, comas, guiones y espacios</p>
+            </div>
+          </div>
         </div>
       </div>
       <div class="form-group">
         <label class="col-md-3 control-label text-right" for="email">Correo electrónico: </label>
         <div class="col-xs-12 col-md-6 input-group">
-          <input type="email" class="form-control" id="email" name="email" value="{{user.email}}" oninput="checkEmail();" maxlength="50" required>
+          <input type="email" class="form-control" id="email" name="email" value="{{user.email}}" oninput="checkEmail();" pattern='/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/' maxlength="50" required>
           <div class="col-xs-12 text-left">
             <div class="text-info">
               <span id="emaErI" class=''></span> <span id="emaErT"></span>

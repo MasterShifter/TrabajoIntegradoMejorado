@@ -2,7 +2,6 @@
 
 const mongoose = require('mongoose')
 const app = require('./app')
-const port = process.env.PORT || 3001
 const config = require('./config')
 
 mongoose.Promise = global.Promise
@@ -12,7 +11,7 @@ mongoose.connect(config.db, (err, res) => {
   }
   console.log('Conexion a la base de datos establecida...')
 
-  app.listen(port, () => {
+  app.listen(config.port, () => {
     console.log(`API REST corriendo en http://localhost:${config.port}`)
   })
 })

@@ -118,8 +118,9 @@ function saveEvent (req, res){
   event.description = req.body.description
   event.user = req.body.user
 
+  console.log(event.picture)
   if (event.picture == null || event.picture === "")
-    event.picture = "/public/img/blank-picture.png"
+    event.picture = "/public/img/blank-picture.jpg"
 
   var errorsList = eventValidator(event)
   if (errorsList.length > 0)
@@ -138,7 +139,7 @@ function updateEvent (req, res){
   let update = req.body
 
   if (req.body.picture === ""){
-    req.body.picture = "/public/img/blank-picture.png";
+    req.body.picture = "/public/img/blank-picture.jpg";
   }
 
   var errorsList = eventUpdateValidator(update)
