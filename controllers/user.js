@@ -174,6 +174,18 @@ function userValidator(user){
     errorsList.push('El nombre excede de los 45 carácteres')
   }
 
+  if (!(/^([A-Za-z0-9_])\w+$/.test(user.nickname))){
+    errorsList.push('El apodo no cumple el formato indicado')
+  }
+
+  if (!(/^([a-zA-Záéíóúñm,-]+[ ]*)+$/.test(user.displayName))){
+    errorsList.push('El nombre no cumple el formato indicado')
+  }
+
+  if (!(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(user.email))){
+    errorsList.push('El email no cumple el formato indicado')
+  }
+
   if (user.email.length > 50){
     errorsList.push('El email excede de los 50 carácteres')
   }
@@ -222,6 +234,18 @@ function userValidatorUpdate(user){
 
   if (user.email.length > 50)
   errorsList.push('El email excede de los 50 carácteres')
+
+  if (!(/^([A-Za-z0-9_])\w+$/.test(user.nickname))){
+    errorsList.push('El apodo no cumple el formato indicado')
+  }
+
+  if (!(/^([a-zA-Záéíóúñm,-]+[ ]*)+$/.test(user.displayName))){
+    errorsList.push('El nombre no cumple el formato indicado')
+  }
+
+  if (!(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(user.email))){
+    errorsList.push('El email no cumple el formato indicado')
+  }
 
   var birthdate = new Date(user.birthdate);
   var cur = new Date();

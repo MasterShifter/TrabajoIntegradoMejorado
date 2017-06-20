@@ -161,7 +161,7 @@ if (window.user != null){
           avisoDiv.className = "alert alert-success";
           aviso.innerHTML = "¡usuario actualizado!";
 
-          if (window.user._id == formEdit._id.value)
+          if (window.user._id == formEdit._id.value){
           window.user.nickname = formEdit.nickname.value;
           window.user.displayName = formEdit.displayName.value;
           window.user.email = formEdit.email.value;
@@ -170,6 +170,7 @@ if (window.user != null){
           window.user.genre = formEdit.genre.value;
           window.user.description = formEdit.description.value;
           localStorage.setItem('user', JSON.stringify(window.user));
+        }
 
           window.location = "/user/"+formEdit.nickname.value;
         } else {
