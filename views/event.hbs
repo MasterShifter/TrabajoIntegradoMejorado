@@ -287,7 +287,7 @@ if (window.user == null){
     var info = document.getElementById('commentLimit');
     var commentInfo = document.getElementById('commentInfo');
 
-    info.innerHTML = content.value.length;
+    info.innerHTML = textarea.value.length;
 
     if (info.innerHTML == textarea.maxLength){
       commentInfo.className = "col-xs-6 red";
